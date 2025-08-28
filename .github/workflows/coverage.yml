@@ -37,7 +37,7 @@ jobs:
           coverage_file: coverage.xml
 
       - name: Commit coverage badge
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v6
         with:
           commit_message: "docs: update coverage badge"
           file_pattern: coverage.svg
