@@ -1,0 +1,22 @@
+[tool.semantic_release]
+version_variable = "custom_components/solar_window_system/manifest.json:version"
+branch = "main"
+changelog_file = "CHANGELOG.md"
+commit_message = "chore(release): {version}"
+tag_format = "v{version}"
+upload_to_pypi = false
+upload_to_release = true
+
+[tool.semantic_release.commit_parser_options]
+allowed_tags = ["build", "chore", "ci", "docs", "feat", "fix", "perf", "style", "refactor", "test"]
+minor_tags = ["feat"]
+patch_tags = ["fix", "perf"]
+
+[tool.ruff.lint]
+# Relax a few rules for tests to reduce false-positives from pytest-style assertions
+extend-ignore = ["S101", "TRY003", "EM101", "EM102", "PLC0415", "ANN001", "D103"]
+per-file-ignores = { "tests/**" = ["S101", "D100", "D101", "D102", "D103", "ANN201", "ANN001", "ARG001", "ARG002", "ANN202", "TRY003", "EM101", "EM102", "PLC0415", "SLF001"] }
+
+[tool.ruff]
+line-length = 88
+# Do not exclude tests from ruff; we control noisy rules via per-file-ignores.

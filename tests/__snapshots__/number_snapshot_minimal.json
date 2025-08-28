@@ -1,0 +1,9 @@
+{
+  "attributes": {
+    "friendly_name": "Example Setpoint",
+    "unit_of_measurement": "°C"
+  },
+  "entity_id": "number.sws_example_setpoint",
+  "state": 21.5,
+  "unique_id": "sws_global_example_setpoint"
+}

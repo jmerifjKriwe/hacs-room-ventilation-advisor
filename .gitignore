@@ -1,0 +1,23 @@
+# artifacts
+__pycache__
+.pytest*
+*.egg-info
+*/build/*
+*/dist/*
+
+# .github und Unterordner werden versioniert (keine Ignore-Regel für .github)
+
+
+# misc
+.coverage
+.vscode
+coverage.xml
+.ruff_cache
+.env
+
+# Home Assistant configuration
+config/*
+!config/configuration.yaml
+
+# Todo file
+.todo

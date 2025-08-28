@@ -1,0 +1,43 @@
+name: Test Coverage
+
+on:
+  push:
+    branches:
+      - "main"
+
+permissions:
+  contents: write # Needed to commit the badge
+
+jobs:
+  coverage:
+    name: "Calculate and update coverage badge"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install -r requirements.txt
+          python3 -m pip install -r requirements_test.txt
+
+      - name: Run tests with coverage
+        run: python3 -m pytest --cov=custom_components/solar_window_system --cov-report=xml
+
+      - name: Generate coverage badge
+        uses: tj-actions/coverage-badge-py@v2
+        with:
+          output: coverage.svg
+          coverage_file: coverage.xml
+
+      - name: Commit coverage badge
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "docs: update coverage badge"
+          file_pattern: coverage.svg

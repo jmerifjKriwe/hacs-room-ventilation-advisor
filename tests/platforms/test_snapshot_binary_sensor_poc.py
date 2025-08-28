@@ -1,0 +1,64 @@
+"""
+PoC snapshot test for a binary_sensor entity.
+
+Demonstrates serializing a mapping and a State-like object and comparing
+the result against a stored snapshot.
+"""
+
+from __future__ import annotations
+
+from unittest.mock import Mock
+
+from tests.helpers import (
+    normalize_entity_snapshot,
+    normalize_timestamps,
+    trim_name_prefix,
+)
+from tests.helpers.serializer import serialize_entity
+from tests.helpers.snapshot import assert_matches_snapshot
+from tests.helpers.test_framework import BaseTestCase
+
+
+class TestBinarySensorSnapshot(BaseTestCase):
+    """PoC snapshot test for a binary_sensor entity."""
+
+    test_type = "snapshot"
+
+    def get_required_fixtures(self) -> list[str]:
+        """Return list of required fixture names for this test type."""
+        return []
+
+    async def test_binary_sensor_snapshot_minimal(self) -> None:
+        """Serialize a tiny binary_sensor and compare to snapshot."""
+        raw = {
+            "entity_id": "binary_sensor.sws_example_window",
+            "unique_id": "sws_global_example_window",
+            "state": True,
+            "attributes": {
+                "device_class": "opening",
+                "friendly_name": "Example Window",
+            },
+        }
+
+        example = serialize_entity(raw, normalize_numbers=True)
+        normalize_entity_snapshot(example)
+        normalize_timestamps(example)
+        trim_name_prefix(example)
+        assert_matches_snapshot("binary_sensor_snapshot_minimal", example)
+
+        mock_state = Mock()
+        mock_state.entity_id = "binary_sensor.sws_example_window"
+        mock_state.state = True
+        mock_state.attributes = {
+            "device_class": "opening",
+            "friendly_name": "Example Window",
+        }
+        mock_state.unique_id = "sws_global_example_window"
+
+        example2 = serialize_entity(mock_state, normalize_numbers=True)
+        normalize_entity_snapshot(example2)
+        normalize_timestamps(example2)
+        trim_name_prefix(example2)
+        if example2 != example:
+            msg = "Serializer output for Mock state should match mapping-based output"
+            raise AssertionError(msg)

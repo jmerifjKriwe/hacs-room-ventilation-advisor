@@ -1,0 +1,10 @@
+{
+  "attributes": {
+    "friendly_name": "Int Example",
+    "unique_id": "sws_int_example",
+    "unit_of_measurement": "W"
+  },
+  "entity_id": "sensor.sws_integration_example",
+  "state": 12.3,
+  "unique_id": "sws_int_example"
+}

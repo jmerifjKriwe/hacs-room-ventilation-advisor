@@ -1,0 +1,12 @@
+# Service to trigger recalculation for all or a specific window
+recalculate:
+  name: Recalculate shading
+  description: Trigger a recalculation for all windows or a specific window.
+  fields:
+    window_id:
+      name: Window ID
+      description: Optional window ID to recalculate only this window. If omitted, all windows are recalculated.
+      required: false
+      example: "window_1"
+      selector:
+        text:

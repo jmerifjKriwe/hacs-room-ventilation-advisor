@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+echo "🔍 Suche nach Prozessen auf Port 8123..."
+PIDS=$(lsof -ti :8123)
+
+if [ -n "$PIDS" ]; then
+  echo "🛑 Beende folgende PIDs: $PIDS"
+  kill -9 $PIDS
+  echo "✅ Prozesse beendet."
+else
+  echo "✅ Kein Prozess auf Port 8123 gefunden."
+fi

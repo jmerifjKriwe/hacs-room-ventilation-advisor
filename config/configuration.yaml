@@ -1,0 +1,216 @@
+# https://www.home-assistant.io/integrations/default_config/
+default_config:
+# automation:
+# backup:
+# bluetooth:
+# config:
+# conversation:
+# counter:
+# dhcp:
+# energy:
+# frontend:
+# hardware:
+# history:
+# homeassistant_alerts:
+# cloud:
+# image_upload:
+# input_button:
+# input_datetime:
+# input_select:
+# input_text:
+# logbook:
+# media_source:
+# mobile_app:
+# my:
+# person:
+# schedule:
+# scene:
+# script:
+# ssdp:
+# stream:
+# sun:
+# system_health:
+# tag:
+# timer:
+# usb:
+# webhook:
+# zeroconf:
+# zone:
+
+api:
+
+# https://www.home-assistant.io/integrations/homeassistant/
+homeassistant:
+  debug: true
+
+# https://www.home-assistant.io/integrations/logger/
+logger:
+  default: info
+  logs:
+    custom_components.solar_window_system: debug
+
+
+## dummy configuration for solar window system
+# configuration.yaml
+
+# Input helpers to control the dummy values from the UI
+input_number:
+  dummy_solar_radiation:
+    name: "Dummy Solar Radiation"
+    min: 0
+    max: 1200
+    step: 50
+    unit_of_measurement: "W/m²"
+    initial: 500
+  dummy_outdoor_temperature:
+    name: "Dummy Outdoor Temperature"
+    min: -20
+    max: 40
+    step: 1
+    unit_of_measurement: "°C"
+    initial: 30
+  # Dummies for indoor temperatures
+  dummy_innentemperatur_wohnzimmer:
+    name: "Dummy Innentemperatur Wohnzimmer"
+    min: 15
+    max: 30
+    step: 0.5
+    unit_of_measurement: "°C"
+    initial: 22
+  dummy_innentemperatur_esszimmer:
+    name: "Dummy Innentemperatur Esszimmer"
+    min: 15
+    max: 30
+    step: 0.5
+    unit_of_measurement: "°C"
+    initial: 22
+  dummy_innentemperatur_kueche:
+    name: "Dummy Innentemperatur Kueche"
+    min: 15
+    max: 30
+    step: 0.5
+    unit_of_measurement: "°C"
+    initial: 22
+  dummy_innentemperatur_gaestebad:
+    name: "Dummy Innentemperatur Gaestebad"
+    min: 15
+    max: 30
+    step: 0.5
+    unit_of_measurement: "°C"
+    initial: 22
+  dummy_innentemperatur_atelier:
+    name: "Dummy Innentemperatur Atelier"
+    min: 15
+    max: 30
+    step: 0.5
+    unit_of_measurement: "°C"
+    initial: 22
+  dummy_innentemperatur_schlafzimmer:
+    name: "Dummy Innentemperatur Schlafzimmer"
+    min: 15
+    max: 30
+    step: 0.5
+    unit_of_measurement: "°C"
+    initial: 22
+  dummy_innentemperatur_bad:
+    name: "Dummy Innentemperatur Bad"
+    min: 15
+    max: 30
+    step: 0.5
+    unit_of_measurement: "°C"
+    initial: 22
+  dummy_innentemperatur_kind1:
+    name: "Dummy Innentemperatur Kind1"
+    min: 15
+    max: 30
+    step: 0.5
+    unit_of_measurement: "°C"
+    initial: 22
+  dummy_innentemperatur_kind2:
+    name: "Dummy Innentemperatur Kind2"
+    min: 15
+    max: 30
+    step: 0.5
+    unit_of_measurement: "°C"
+    initial: 22
+  dummy_wettervorhersage:
+    name: "Dummy Wettervorhersage Höchsttemperatur"
+    min: 15
+    max: 30
+    step: 0.5
+    unit_of_measurement: "°C"
+    initial: 25
+
+input_boolean:
+  dummy_weather_warning:
+    name: "Dummy Weather Warning"
+
+# Template sensors that mimic the real sensors for the integration setup
+template:
+  - sensor:
+      - name: "Dummy Solar Radiation Sensor"
+        unique_id: dummy_solar_radiation_sensor
+        state: "{{ states('input_number.dummy_solar_radiation') }}"
+        unit_of_measurement: "W/m²"
+      - name: "Dummy Outdoor Temperature Sensor"
+        unique_id: dummy_outdoor_temperature_sensor
+        state: "{{ states('input_number.dummy_outdoor_temperature') }}"
+        unit_of_measurement: "°C"
+        device_class: temperature
+      - name: "Temperatur Wohnzimmer"
+        unique_id: dummy_temperatur_wohnzimmer
+        state: >
+          {% set val = states('input_number.dummy_innentemperatur_wohnzimmer') %}
+          {{ val if val not in ['unknown', 'unavailable', 'none'] else 22 }}
+        unit_of_measurement: "°C"
+        device_class: temperature
+      - name: "Temperatur Esszimmer"
+        unique_id: dummy_temperatur_esszimmer
+        state: "{{ states('input_number.dummy_innentemperatur_esszimmer') }}"
+        unit_of_measurement: "°C"
+        device_class: temperature
+      - name: "Temperatur Kueche"
+        unique_id: dummy_temperatur_kueche
+        state: "{{ states('input_number.dummy_innentemperatur_kueche') }}"
+        unit_of_measurement: "°C"
+        device_class: temperature
+      - name: "Temperatur Gaestebad"
+        unique_id: dummy_temperatur_gaestebad
+        state: "{{ states('input_number.dummy_innentemperatur_gaestebad') }}"
+        unit_of_measurement: "°C"
+        device_class: temperature
+      - name: "Temperatur Atelier"
+        unique_id: dummy_temperatur_atelier
+        state: "{{ states('input_number.dummy_innentemperatur_atelier') }}"
+        unit_of_measurement: "°C"
+        device_class: temperature
+      - name: "Temperatur Schlafzimmer"
+        unique_id: dummy_temperatur_schlafzimmer
+        state: "{{ states('input_number.dummy_innentemperatur_schlafzimmer') }}"
+        unit_of_measurement: "°C"
+        device_class: temperature
+      - name: "Temperatur Bad"
+        unique_id: dummy_temperatur_bad
+        state: "{{ states('input_number.dummy_innentemperatur_bad') }}"
+        unit_of_measurement: "°C"
+        device_class: temperature
+      - name: "Temperatur Kind1"
+        unique_id: dummy_temperatur_kind1
+        state: "{{ states('input_number.dummy_innentemperatur_kind1') }}"
+        unit_of_measurement: "°C"
+        device_class: temperature
+      - name: "Temperatur Kind2"
+        unique_id: dummy_temperatur_kind2
+        state: "{{ states('input_number.dummy_innentemperatur_kind2') }}"
+        unit_of_measurement: "°C"
+        device_class: temperature
+      - name: "Wettervorhersage Höchsttemperatur"
+        unique_id: dummy_wettervorhersage_hoechsttemperatur
+        state: "{{ states('input_number.dummy_wettervorhersage') }}"
+        unit_of_measurement: "°C"
+        device_class: temperature
+
+  - binary_sensor:
+      - name: "Dummy Weather Warning Sensor"
+        unique_id: dummy_weather_warning_sensor
+        state: "{{ is_state('input_boolean.dummy_weather_warning', 'on') }}"

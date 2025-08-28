@@ -1,0 +1,351 @@
+{
+    "config": {
+        "step": {
+            "global_basic": {
+                "title": "Globale Konfiguration",
+                "description": "Grundlegende Geometrie und Sensoren",
+                "data": {
+                    "update_interval": "Aktualisierungsintervall (Minuten)",
+                    "window_width": "Standard Fensterbreite (m)",
+                    "window_height": "Standard Fensterhöhe (m)",
+                    "shadow_depth": "Standard Schattentiefe (m)",
+                    "shadow_offset": "Standard Schattenversatz (m)",
+                    "solar_radiation_sensor": "Solare Einstrahlungssensor",
+                    "outdoor_temperature_sensor": "Außentemperatur-Sensor",
+                    "indoor_temperature_sensor": "Raumtemperatur-Sensor",
+                    "forecast_temperature_sensor": "Vorhersage-Temperatursensor",
+                    "weather_warning_sensor": "Quelle Wetterwarnung"
+                },
+                "data_description": {
+                    "update_interval": "Wie oft das System seine Berechnungen aktualisiert. Bereich: 1-1440 Minuten.",
+                    "window_width": "0,10–10,00 m. Erforderlich.",
+                    "window_height": "0,10–10,00 m. Erforderlich.",
+                    "shadow_depth": "0–5 m. Erforderlich.",
+                    "shadow_offset": "0–5 m. Erforderlich.",
+                    "solar_radiation_sensor": "Erforderlich. Ein Sensor mit solarer Einstrahlung in W/m².",
+                    "outdoor_temperature_sensor": "Erforderlich. Ein Temperatursensor (°C/°F/K).",
+                    "indoor_temperature_sensor": "Erforderlich. Ein Temperatursensor für die Raumtemperatur (°C/°F/K).",
+                    "forecast_temperature_sensor": "Optional. Ein Temperatursensor (°C/°F/K).",
+                    "weather_warning_sensor": "Optional. Ein Binary_sensor oder Input_boolean für Warnungen."
+                }
+            },
+            "global_enhanced": {
+                "title": "Globale Standardwerte",
+                "description": "Erforderliche Standard-Schwellen und Parameter",
+                "data": {
+                    "g_value": "Standard g-Wert",
+                    "frame_width": "Standard Rahmenbreite (m)",
+                    "tilt": "Standard Neigung (°)",
+                    "diffuse_factor": "Standard Diffusionsfaktor",
+                    "threshold_direct": "Standard Schwelle Direkt (W/m²)",
+                    "threshold_diffuse": "Standard Schwelle Diffus (W/m²)",
+                    "temperature_indoor_base": "Standard Basisraumtemperatur (°C)",
+                    "temperature_outdoor_base": "Standard Basisaußentemperatur (°C)"
+                },
+                "data_description": {
+                    "g_value": "0,10–0,90. Erforderlich.",
+                    "frame_width": "0,05–0,30 m. Erforderlich.",
+                    "tilt": "0–90°. Erforderlich.",
+                    "diffuse_factor": "0,05–0,50. Erforderlich.",
+                    "threshold_direct": "0–1000 W/m². Erforderlich.",
+                    "threshold_diffuse": "0–1000 W/m². Erforderlich.",
+                    "temperature_indoor_base": "10–30 °C. Erforderlich.",
+                    "temperature_outdoor_base": "10–30 °C. Erforderlich."
+                }
+            },
+            "global_scenarios": {
+                "title": "Globale Szenarien",
+                "description": "Szenario-Schwellenwerte",
+                "data": {
+                    "scenario_b_temp_indoor": "Szenario B Raumtemperatur (°C)",
+                    "scenario_b_temp_outdoor": "Szenario B Außentemperatur (°C)",
+                    "scenario_c_temp_indoor": "Szenario C Raumtemperatur (°C)",
+                    "scenario_c_temp_outdoor": "Szenario C Außentemperatur (°C)",
+                    "scenario_c_temp_forecast": "Szenario C Vorhersagetemperatur (°C)",
+                    "scenario_c_start_hour": "Szenario C Startstunde"
+                },
+                "data_description": {
+                    "scenario_b_temp_indoor": "10–30 °C. Erforderlich.",
+                    "scenario_b_temp_outdoor": "10–30 °C. Erforderlich.",
+                    "scenario_c_temp_indoor": "10–30 °C. Erforderlich.",
+                    "scenario_c_temp_outdoor": "10–30 °C. Erforderlich.",
+                    "scenario_c_temp_forecast": "15–40 °C. Erforderlich.",
+                    "scenario_c_start_hour": "0–23. Erforderlich."
+                }
+            }
+        },
+        "abort": {
+            "no_more_entries": "Nur ein Konfigurationseintrag ist erlaubt",
+            "already_configured": "Alle Konfigurationseinträge sind bereits vorhanden",
+            "created_missing_entries": "Fehlende Konfigurationseinträge wurden erstellt",
+            "missing_data": "Fehlende Konfigurationsdaten",
+            "unknown_entry_type": "Unbekannter Eintragstyp"
+        },
+        "error": {
+            "invalid_number": "Bitte eine gültige Zahl eingeben.",
+            "number_out_of_range": "Wert liegt außerhalb des zulässigen Bereichs."
+        }
+    },
+    "options": {
+        "step": {
+            "global_basic": {
+                "title": "Globale Konfiguration bearbeiten",
+                "description": "Grundlegende Geometrie und Sensoren",
+                "data": {
+                    "window_width": "Standard Fensterbreite (m)",
+                    "window_height": "Standard Fensterhöhe (m)",
+                    "shadow_depth": "Standard Schattentiefe (m)",
+                    "shadow_offset": "Standard Schattenversatz (m)",
+                    "solar_radiation_sensor": "Solare Einstrahlungssensor",
+                    "outdoor_temperature_sensor": "Außentemperatur-Sensor",
+                    "forecast_temperature_sensor": "Vorhersage-Temperatursensor",
+                    "weather_warning_sensor": "Quelle Wetterwarnung"
+                },
+                "data_description": {
+                    "window_width": "0,10–10,00 m. Erforderlich.",
+                    "window_height": "0,10–10,00 m. Erforderlich.",
+                    "shadow_depth": "0–5 m. Erforderlich.",
+                    "shadow_offset": "0–5 m. Erforderlich.",
+                    "solar_radiation_sensor": "Erforderlich. Ein Sensor mit solarer Einstrahlung in W/m².",
+                    "outdoor_temperature_sensor": "Erforderlich. Ein Temperatursensor (°C/°F/K).",
+                    "forecast_temperature_sensor": "Optional. Ein Temperatursensor (°C/°F/K).",
+                    "weather_warning_sensor": "Optional. Ein binary_sensor oder input_boolean für Warnungen."
+                }
+            },
+            "global_enhanced": {
+                "title": "Globale Standardwerte bearbeiten",
+                "description": "Erforderliche Standard-Schwellen und Parameter",
+                "data": {
+                    "g_value": "Standard g-Wert",
+                    "frame_width": "Standard Rahmenbreite (m)",
+                    "tilt": "Standard Neigung (°)",
+                    "diffuse_factor": "Standard Diffusionsfaktor",
+                    "threshold_direct": "Standard Schwelle Direkt (W/m²)",
+                    "threshold_diffuse": "Standard Schwelle Diffus (W/m²)",
+                    "temperature_indoor_base": "Standard Basisraumtemperatur (°C)",
+                    "temperature_outdoor_base": "Standard Basisaußentemperatur (°C)"
+                },
+                "data_description": {
+                    "g_value": "0,10–0,90. Erforderlich.",
+                    "frame_width": "0,05–0,30 m. Erforderlich.",
+                    "tilt": "0–90°. Erforderlich.",
+                    "diffuse_factor": "0,05–0,50. Erforderlich.",
+                    "threshold_direct": "0–1000 W/m². Erforderlich.",
+                    "threshold_diffuse": "0–1000 W/m². Erforderlich.",
+                    "temperature_indoor_base": "10–30 °C. Erforderlich.",
+                    "temperature_outdoor_base": "10–30 °C. Erforderlich."
+                }
+            },
+            "global_scenarios": {
+                "title": "Globale Szenarien bearbeiten",
+                "description": "Szenario-Schwellenwerte",
+                "data": {
+                    "scenario_b_temp_indoor": "Szenario B Raumtemperatur (°C)",
+                    "scenario_b_temp_outdoor": "Szenario B Außentemperatur (°C)",
+                    "scenario_c_temp_indoor": "Szenario C Raumtemperatur (°C)",
+                    "scenario_c_temp_outdoor": "Szenario C Außentemperatur (°C)",
+                    "scenario_c_temp_forecast": "Szenario C Vorhersagetemperatur (°C)",
+                    "scenario_c_start_hour": "Szenario C Startstunde"
+                },
+                "data_description": {
+                    "scenario_b_temp_indoor": "10–30 °C. Erforderlich.",
+                    "scenario_b_temp_outdoor": "10–30 °C. Erforderlich.",
+                    "scenario_c_temp_indoor": "10–30 °C. Erforderlich.",
+                    "scenario_c_temp_outdoor": "10–30 °C. Erforderlich.",
+                    "scenario_c_temp_forecast": "15–40 °C. Erforderlich.",
+                    "scenario_c_start_hour": "0–23. Erforderlich."
+                }
+            }
+        }
+    },
+    "config_subentries": {
+        "group": {
+            "initiate_flow": {
+                "user": "Gruppe hinzufügen",
+                "reconfigure": "Gruppenkonfiguration bearbeiten"
+            },
+            "entry_type": "Gruppenkonfiguration",
+            "step": {
+                "user": {
+                    "title": "Gruppe hinzufügen",
+                    "description": "Neue Fenstergruppe konfigurieren",
+                    "data": {
+                        "name": "Gruppenname",
+                        "diffuse_factor": "Diffusionsfaktor",
+                        "threshold_direct": "Schwelle Direktstrahlung (W/m²)",
+                        "threshold_diffuse": "Schwelle Diffusstrahlung (W/m²)",
+                        "temperature_indoor_base": "Basisraumtemperatur (°C)",
+                        "temperature_outdoor_base": "Basisaußentemperatur (°C)",
+                        "indoor_temperature_sensor": "Raumtemperatursensor"
+                    },
+                    "data_description": {
+                        "name": "Erforderlich. Anzeigename der Gruppe.",
+                        "diffuse_factor": "0,05–0,50. Geben Sie -1 ein, um von Global zu erben.",
+                        "threshold_direct": "0–1000 W/m². Geben Sie -1 ein, um von Global zu erben.",
+                        "threshold_diffuse": "0–1000 W/m². Geben Sie -1 ein, um von Global zu erben.",
+                        "temperature_indoor_base": "10–30 °C. Geben Sie -1 ein, um von Global zu erben.",
+                        "temperature_outdoor_base": "10–30 °C. Geben Sie -1 ein, um von Global zu erben.",
+                        "indoor_temperature_sensor": "Optional. Ein Temperatursensor (°C/°F/K). Geben Sie -1 ein, um von Global zu erben."
+                    }
+                },
+                "enhanced": {
+                    "title": "Erweiterte Einstellungen",
+                    "description": "Szenarien und Schwellenwerte",
+                    "data": {
+                        "scenario_b_enable": "Szenario B",
+                        "scenario_b_temp_indoor": "Szenario B Raumtemperatur (°C)",
+                        "scenario_b_temp_outdoor": "Szenario B Außentemperatur (°C)",
+                        "scenario_c_enable": "Szenario C",
+                        "scenario_c_temp_indoor": "Szenario C Raumtemperatur (°C)",
+                        "scenario_c_temp_outdoor": "Szenario C Außentemperatur (°C)",
+                        "scenario_c_temp_forecast": "Szenario C Vorhersagetemperatur (°C)",
+                        "scenario_c_start_hour": "Szenario C Startstunde"
+                    },
+                    "data_description": {
+                        "scenario_b_enable": "Aktivieren/Deaktivieren oder Vererben, um Global zu nutzen.",
+                        "scenario_b_temp_indoor": "10–30 °C. Geben Sie -1 ein, um von Global zu erben.",
+                        "scenario_b_temp_outdoor": "10–30 °C. Geben Sie -1 ein, um von Global zu erben.",
+                        "scenario_c_enable": "Aktivieren/Deaktivieren oder Vererben, um Global zu nutzen.",
+                        "scenario_c_temp_indoor": "10–30 °C. Geben Sie -1 ein, um von Global zu erben.",
+                        "scenario_c_temp_outdoor": "10–30 °C. Geben Sie -1 ein, um von Global zu erben.",
+                        "scenario_c_temp_forecast": "15–40 °C. Geben Sie -1 ein, um von Global zu erben.",
+                        "scenario_c_start_hour": "0–23. Leer lassen, um Global zu verwenden."
+                    }
+                },
+                "reconfigure": {
+                    "title": "Gruppe aktualisieren",
+                    "description": "Gruppenkonfiguration aktualisieren",
+                    "data": {
+                        "name": "Gruppenname",
+                        "diffuse_factor": "Diffusionsfaktor",
+                        "threshold_direct": "Schwelle Direktstrahlung (W/m²)",
+                        "threshold_diffuse": "Schwelle Diffusstrahlung (W/m²)",
+                        "temperature_indoor_base": "Basisraumtemperatur (°C)",
+                        "temperature_outdoor_base": "Basisaußentemperatur (°C)"
+                    }
+                }
+            },
+            "error": {
+                "invalid_number": "Bitte eine gültige Zahl eingeben.",
+                "number_out_of_range": "Wert liegt außerhalb des zulässigen Bereichs."
+            },
+            "abort": {
+                "reconfigure_successful": "Änderungen gespeichert"
+            }
+        },
+        "window": {
+            "initiate_flow": {
+                "user": "Fenster hinzufügen",
+                "reconfigure": "Fensterkonfiguration bearbeiten"
+            },
+            "entry_type": "Fensterkonfiguration",
+            "step": {
+                "user": {
+                    "title": "Fenster hinzufügen",
+                    "description": "Neues Fenster konfigurieren",
+                    "data": {
+                        "name": "Fenstername",
+                        "azimuth": "Azimut (°)",
+                        "azimuth_min": "Azimut min (°)",
+                        "azimuth_max": "Azimut max (°)",
+                        "elevation_min": "Elevation min (°)",
+                        "elevation_max": "Elevation max (°)",
+                        "window_width": "Fensterbreite (m)",
+                        "window_height": "Fensterhöhe (m)",
+                        "shadow_depth": "Schattentiefe (m)",
+                        "shadow_offset": "Schattenversatz (m)",
+                        "linked_group": "Verknüpft mit Gruppe",
+                        "indoor_temperature_sensor": "Raumtemperatursensor"
+                    },
+                    "data_description": {
+                        "name": "Erforderlich. Anzeigename des Fensters.",
+                        "azimuth": "0–360°. Erforderlich.",
+                        "azimuth_min": "−90–0°. Erforderlich.",
+                        "azimuth_max": "0–90°. Erforderlichn.",
+                        "elevation_min": "0–90°. Erforderlich.",
+                        "elevation_max": "0–90°. Erforderlich.",
+                        "window_width": "0,10–10,00 m. Erforderlich; Geben Sie -1 ein, um von Global zu erben.",
+                        "window_height": "0,10–10,00 m. Erforderlich; Geben Sie -1 ein, um von Global zu erben.",
+                        "shadow_depth": "0–5 m. Erforderlich; Geben Sie -1 ein, um von Global zu erben.",
+                        "shadow_offset": "0–5 m. Erforderlich; Geben Sie -1 ein, um von Global zu erben.",
+                        "linked_group": "Gruppe wählen oder ‚(keine)‘ für unabhängig.",
+                        "indoor_temperature_sensor": "Optional. Ein Temperatursensor (°C/°F/K). Geben Sie -1 ein, um von Gruppe/Global zu erben."
+                    }
+                },
+                "overrides": {
+                    "title": "Überschreibungen",
+                    "description": "Optionale fensterspezifische Parameter",
+                    "data": {
+                        "g_value": "g-Wert",
+                        "frame_width": "Rahmenbreite (m)",
+                        "tilt": "Neigung (°)",
+                        "diffuse_factor": "Diffusionsfaktor",
+                        "threshold_direct": "Schwelle Direktstrahlung (W/m²)",
+                        "threshold_diffuse": "Schwelle Diffusstrahlung (W/m²)",
+                        "temperature_indoor_base": "Basisraumtemperatur (°C)",
+                        "temperature_outdoor_base": "Basisaußentemperatur (°C)"
+                    },
+                    "data_description": {
+                        "g_value": "Erforderlich; Geben Sie -1 ein, um von Global zu erben.",
+                        "frame_width": "Erforderlich; Geben Sie -1 ein, um von Global zu erben.",
+                        "tilt": "Erforderlich; Geben Sie -1 ein, um von Global zu erben.",
+                        "diffuse_factor": "0,05–0,50. Erforderlich; Geben Sie -1 ein, um von Global zu erben.",
+                        "threshold_direct": "0–1000 W/m². Erforderlich; Geben Sie -1 ein, um von Global zu erben.",
+                        "threshold_diffuse": "0–1000 W/m². Erforderlich; Geben Sie -1 ein, um von Global zu erben.",
+                        "temperature_indoor_base": "10–30 °C. Erforderlich; Geben Sie -1 ein, um von Global zu erben.",
+                        "temperature_outdoor_base": "10–30 °C. Geben Sie -1 ein, um von Gruppe oder Global zu erben."
+                    }
+                },
+                "scenarios": {
+                    "title": "Szenarien",
+                    "description": "Schwellenwerte für Szenarien",
+                    "data": {
+                        "scenario_b_enable": "Szenario B",
+                        "scenario_b_temp_indoor": "Szenario B Raumtemperatur (°C)",
+                        "scenario_b_temp_outdoor": "Szenario B Außentemperatur (°C)",
+                        "scenario_c_enable": "Szenario C",
+                        "scenario_c_temp_indoor": "Szenario C Raumtemperatur (°C)",
+                        "scenario_c_temp_outdoor": "Szenario C Außentemperatur (°C)",
+                        "scenario_c_temp_forecast": "Szenario C Vorhersagetemperatur (°C)",
+                        "scenario_c_start_hour": "Szenario C Startstunde"
+                    },
+                    "data_description": {
+                        "scenario_b_enable": "Aktivieren/Deaktivieren oder Vererben, um Gruppe/Global zu nutzen.",
+                        "scenario_b_temp_indoor": "10–30 °C. Geben Sie -1 ein, um von Gruppe/Global zu erben.",
+                        "scenario_b_temp_outdoor": "10–30 °C. Geben Sie -1 ein, um von Gruppe/Global zu erben.",
+                        "scenario_c_enable": "Aktivieren/Deaktivieren oder Vererben, um Gruppe/Global zu nutzen.",
+                        "scenario_c_temp_indoor": "10–30 °C. Geben Sie -1 ein, um von Gruppe/Global zu erben.",
+                        "scenario_c_temp_outdoor": "10–30 °C. Geben Sie -1 ein, um von Gruppe/Global zu erben.",
+                        "scenario_c_temp_forecast": "15–40 °C. Geben Sie -1 ein, um von Gruppe/Global zu erben.",
+                        "scenario_c_start_hour": "0–23. Geben Sie -1 ein, um von Gruppe/Global zu erben."
+                    }
+                },
+                "reconfigure": {
+                    "title": "Fenster aktualisieren",
+                    "description": "Fensterkonfiguration aktualisieren",
+                    "data": {
+                        "name": "Fenstername",
+                        "azimuth": "Azimut (°)",
+                        "azimuth_min": "Azimut min (°)",
+                        "azimuth_max": "Azimut max (°)",
+                        "elevation_min": "Elevation min (°)",
+                        "elevation_max": "Elevation max (°)",
+                        "window_width": "Fensterbreite (m)",
+                        "window_height": "Fensterhöhe (m)",
+                        "shadow_depth": "Schattentiefe (m)",
+                        "shadow_offset": "Schattenversatz (m)",
+                        "linked_group": "Verknüpft mit Gruppe",
+                        "indoor_temperature_sensor": "Raumtemperatursensor"
+                    }
+                }
+            },
+            "error": {
+                "invalid_number": "Bitte eine gültige Zahl eingeben.",
+                "number_out_of_range": "Wert liegt außerhalb des zulässigen Bereichs."
+            },
+            "abort": {
+                "reconfigure_successful": "Änderungen gespeichert"
+            }
+        }
+    }
+}
