@@ -1,9 +1,0 @@
-{
-  "attributes": {
-    "device_class": "opening",
-    "friendly_name": "Example Window"
-  },
-  "entity_id": "binary_sensor.sws_example_window",
-  "state": true,
-  "unique_id": "sws_global_example_window"
-}

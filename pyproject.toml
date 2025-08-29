@@ -1,5 +1,5 @@
 [tool.semantic_release]
-version_variable = "custom_components/solar_window_system/manifest.json:version"
+version_variable = "custom_components/room_ventilation_advisor/manifest.json:version"
 branch = "main"
 changelog_file = "CHANGELOG.md"
 commit_message = "chore(release): {version}"

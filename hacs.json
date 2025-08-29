@@ -1,5 +1,5 @@
 {
-    "name": "Solar Window System",
-    "homeassistant": "2025.2.4",
+    "name": "Room ventilation advisor",
+    "homeassistant": "2025.8.3",
     "render_readme": true
 }

@@ -28,7 +28,7 @@ jobs:
           python3 -m pip install -r requirements_test.txt
 
       - name: Run tests with coverage
-        run: python3 -m pytest --cov=custom_components/solar_window_system --cov-report=xml
+        run: python3 -m pytest --cov=custom_components/room_ventilation_advisor --cov-report=xml
 
       - name: Generate coverage badge
         uses: tj-actions/coverage-badge-py@v2

@@ -1,8 +1,0 @@
-{
-  "attributes": {
-    "friendly_name": "Example Outlet"
-  },
-  "entity_id": "switch.sws_example_outlet",
-  "state": "on",
-  "unique_id": "sws_global_example_outlet"
-}

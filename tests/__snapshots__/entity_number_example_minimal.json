@@ -1,9 +1,0 @@
-{
-  "attributes": {
-    "name": "SWS_GLOBAL Minimum Solar Radiation",
-    "unit_of_measurement": "W/m²"
-  },
-  "entity_id": "number.sws_global_min_solar_radiation",
-  "state": 50,
-  "unique_id": "sws_global_min_solar_radiation"
-}

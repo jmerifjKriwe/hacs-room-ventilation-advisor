@@ -1,0 +1,115 @@
+name: CI & Release
+
+on:
+  push:
+    branches: ['*']
+  pull_request:
+
+permissions: read-all
+
+jobs:
+  test:
+    name: "Run tests"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install -r requirements.txt
+          python3 -m pip install -r requirements_test.txt
+
+      - name: Run tests with pytest
+        run: python3 -m pytest
+
+  lint:
+    name: "Run linter"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: "pip"
+
+      - name: Install requirements
+        run: python3 -m pip install -r requirements.txt
+
+      - name: Lint
+        run: python3 -m ruff check --config .ruff.toml .
+
+      - name: Format
+        run: python3 -m ruff format . --check
+
+  validate:
+    name: "Run validation"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v5
+
+      - name: Run hassfest validation
+        uses: home-assistant/actions/hassfest@72e1db9d29431ebc9439e48504e687b53e90d366 # master
+
+      - name: Run HACS validation
+        uses: hacs/action@d556e736723344f83838d08488c983a15381059a # 22.5.0
+        with:
+          category: integration
+          # Remove this 'ignore' key when you have added brand images for your integration to https://github.com/home-assistant/brands
+          ignore: brands
+
+  release:
+    needs: [test, lint, validate]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Setup | Force release branch to be at workflow sha
+        run: git reset --hard ${{ github.sha }}
+
+      - name: Setup | Ensure origin/main is up-to-date
+        run: git fetch origin
+
+      - name: Evaluate | Verify upstream has NOT changed
+        shell: bash
+        run: |
+          UPSTREAM_BRANCH_NAME="origin/main"
+          UPSTREAM_SHA="$(git rev-parse "$UPSTREAM_BRANCH_NAME")"
+          HEAD_SHA="$(git rev-parse HEAD)"
+          echo "HEAD: $HEAD_SHA"
+          echo "UPSTREAM: $UPSTREAM_SHA"
+          if [ "$HEAD_SHA" != "$UPSTREAM_SHA" ]; then
+            printf >&2 '%s\n' "[HEAD SHA] $HEAD_SHA != $UPSTREAM_SHA [UPSTREAM SHA]"
+            printf >&2 '%s\n' "::error::Upstream has changed, aborting release..."
+            exit 1
+          fi
+
+      - name: Action | Semantic Version Release
+        id: release
+        uses: python-semantic-release/python-semantic-release@v10.3.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          git_committer_name: "github-actions"
+          git_committer_email: "actions@users.noreply.github.com"
+
+      - name: Publish | Upload to GitHub Release Assets
+        uses: python-semantic-release/publish-action@v10.3.1
+        if: steps.release.outputs.released == 'true'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.release.outputs.tag }}

@@ -1,9 +1,0 @@
-{
-  "attributes": {
-    "friendly_name": "Example",
-    "unit_of_measurement": "W"
-  },
-  "entity_id": "sensor.sws_example_power",
-  "state": 123.4,
-  "unique_id": "sws_global_example_power"
-}
