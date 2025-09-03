@@ -286,7 +286,8 @@ class TestRoomVentilationAdvisorOptionsFlow:
     async def test_options_flow_advanced_schema_serializable(
         self, hass: HomeAssistant
     ) -> None:
-        """Ensure advanced options schema can be serialized to JSON.
+        """
+        Ensure advanced options schema can be serialized to JSON.
 
         The UI serializes the voluptuous schema using
         voluptuous_serialize.convert when serving the form. A nested
