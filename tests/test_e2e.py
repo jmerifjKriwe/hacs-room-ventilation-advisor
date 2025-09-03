@@ -1,5 +1,7 @@
 """End-to-End tests for Room Ventilation Advisor integration."""
 
+# pyright: reportTypedDictNotRequiredAccess=false,reportOptionalSubscript=false,reportOperatorIssue=false,reportArgumentType=false,reportAttributeAccessIssue=false
+
 import asyncio
 import importlib
 import logging

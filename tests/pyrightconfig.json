@@ -1,0 +1,12 @@
+{
+    "include": [
+        "tests"
+    ],
+    "reportTypedDictNotRequiredAccess": false,
+    "reportOptionalSubscript": false,
+    "reportOperatorIssue": false,
+    "reportArgumentType": false,
+    "reportAttributeAccessIssue": false,
+    "typeCheckingMode": "basic",
+    "pythonVersion": "3.13"
+}

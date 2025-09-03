@@ -299,7 +299,6 @@ class RoomVentilationAdvisorOptionsFlow(config_entries.OptionsFlow):
         if user_input is not None:
             # Merge advanced settings with existing options
             current_options = dict(self._config_entry.options)
-
             # Accept either nested submission under CONF_ADVANCED_SETTINGS
             # or a flat set of advanced keys produced by the form.
             if CONF_ADVANCED_SETTINGS in user_input and isinstance(
@@ -307,69 +306,7 @@ class RoomVentilationAdvisorOptionsFlow(config_entries.OptionsFlow):
             ):
                 advanced_settings = user_input[CONF_ADVANCED_SETTINGS]
             else:
-                # Build nested advanced_settings from flat keys
-                advanced_settings = {}
-
-                # Temperature thresholds
-                temp = {}
-                if "temperature_winter_good" in user_input:
-                    temp["winter_good"] = user_input["temperature_winter_good"]
-                if "temperature_winter_moderate" in user_input:
-                    temp["winter_moderate"] = user_input["temperature_winter_moderate"]
-                if "temperature_summer_good" in user_input:
-                    temp["summer_good"] = user_input["temperature_summer_good"]
-                if "temperature_summer_moderate" in user_input:
-                    temp["summer_moderate"] = user_input["temperature_summer_moderate"]
-                if "temperature_default_good" in user_input:
-                    temp["default_good"] = user_input["temperature_default_good"]
-                if "temperature_default_moderate" in user_input:
-                    temp["default_moderate"] = user_input[
-                        "temperature_default_moderate"
-                    ]
-                if temp:
-                    advanced_settings[CONF_TEMPERATURE_THRESHOLDS] = temp
-
-                # Humidity
-                hum = {}
-                if "humidity_good" in user_input:
-                    hum["good"] = user_input["humidity_good"]
-                if "humidity_moderate" in user_input:
-                    hum["moderate"] = user_input["humidity_moderate"]
-                if hum:
-                    advanced_settings[CONF_HUMIDITY_THRESHOLDS] = hum
-
-                # CO2
-                co2 = {}
-                if "co2_very_poor" in user_input:
-                    co2["very_poor"] = user_input["co2_very_poor"]
-                if "co2_poor" in user_input:
-                    co2["poor"] = user_input["co2_poor"]
-                if "co2_moderate" in user_input:
-                    co2["moderate"] = user_input["co2_moderate"]
-                if co2:
-                    advanced_settings[CONF_CO2_THRESHOLDS] = co2
-
-                # Wind
-                wind = {}
-                if "wind_no_effect" in user_input:
-                    wind["no_effect"] = user_input["wind_no_effect"]
-                if "wind_moderate_effect" in user_input:
-                    wind["moderate_effect"] = user_input["wind_moderate_effect"]
-                if wind:
-                    advanced_settings[CONF_WIND_THRESHOLDS] = wind
-
-                # Score weights
-                weights = {}
-                if "weight_temperature" in user_input:
-                    weights["temperature"] = user_input["weight_temperature"]
-                if "weight_humidity" in user_input:
-                    weights["humidity"] = user_input["weight_humidity"]
-                if "weight_co2" in user_input:
-                    weights["co2"] = user_input["weight_co2"]
-                if "weight_time" in user_input:
-                    weights["time"] = user_input["weight_time"]
-                if weights:
-                    advanced_settings[CONF_SCORE_WEIGHTS] = weights
+                advanced_settings = self._build_advanced_settings_from_flat(user_input)
 
             # Update advanced settings
             if CONF_ADVANCED_SETTINGS not in current_options:
@@ -382,7 +319,82 @@ class RoomVentilationAdvisorOptionsFlow(config_entries.OptionsFlow):
         # Get current advanced settings and defaults
         current_advanced = self._config_entry.options.get(CONF_ADVANCED_SETTINGS, {})
 
-        advanced_schema = vol.Schema(
+        advanced_schema = self._make_advanced_schema(current_advanced)
+
+        return self.async_show_form(
+            step_id="advanced",
+            data_schema=advanced_schema,
+        )
+
+    def _build_advanced_settings_from_flat(
+        self, user_input: dict[str, Any]
+    ) -> dict[str, Any]:
+        """Build nested advanced settings dict from a flat form submission."""
+        advanced_settings: dict[str, Any] = {}
+
+        # Helper to cluster flat keys into nested dicts
+        def _collect(dest_key: str, mapping: list[tuple[str, str]]) -> None:
+            container: dict[str, Any] = {}
+            for flat_key, nested_key in mapping:
+                if flat_key in user_input:
+                    container[nested_key] = user_input[flat_key]
+            if container:
+                advanced_settings[dest_key] = container
+
+        # Temperature thresholds mapping
+        _collect(
+            CONF_TEMPERATURE_THRESHOLDS,
+            [
+                ("temperature_winter_good", "winter_good"),
+                ("temperature_winter_moderate", "winter_moderate"),
+                ("temperature_summer_good", "summer_good"),
+                ("temperature_summer_moderate", "summer_moderate"),
+                ("temperature_default_good", "default_good"),
+                ("temperature_default_moderate", "default_moderate"),
+            ],
+        )
+
+        # Humidity
+        _collect(
+            CONF_HUMIDITY_THRESHOLDS,
+            [("humidity_good", "good"), ("humidity_moderate", "moderate")],
+        )
+
+        # CO2
+        _collect(
+            CONF_CO2_THRESHOLDS,
+            [
+                ("co2_very_poor", "very_poor"),
+                ("co2_poor", "poor"),
+                ("co2_moderate", "moderate"),
+            ],
+        )
+
+        # Wind
+        _collect(
+            CONF_WIND_THRESHOLDS,
+            [
+                ("wind_no_effect", "no_effect"),
+                ("wind_moderate_effect", "moderate_effect"),
+            ],
+        )
+
+        # Score weights
+        _collect(
+            CONF_SCORE_WEIGHTS,
+            [
+                ("weight_temperature", "temperature"),
+                ("weight_humidity", "humidity"),
+                ("weight_co2", "co2"),
+                ("weight_time", "time"),
+            ],
+        )
+
+        return advanced_settings
+
+    def _make_advanced_schema(self, current_advanced: dict[str, Any]) -> vol.Schema:
+        """Construct the advanced options schema from current values and defaults."""
+        return vol.Schema(
             {
                 # Temperature thresholds
                 vol.Optional(
@@ -495,11 +507,6 @@ class RoomVentilationAdvisorOptionsFlow(config_entries.OptionsFlow):
                     ),
                 ): vol.Coerce(float),
             }
-        )
-
-        return self.async_show_form(
-            step_id="advanced",
-            data_schema=advanced_schema,
         )
 
     async def async_step_rooms(
