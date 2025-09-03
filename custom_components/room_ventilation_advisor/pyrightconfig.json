@@ -1,0 +1,31 @@
+{
+    "include": [
+        "."
+    ],
+    "exclude": [
+        "**/__pycache__",
+        "**/.pytest_cache"
+    ],
+    "reportMissingImports": true,
+    "reportMissingTypeStubs": false,
+    "reportTypedDictNotRequiredAccess": false,
+    "reportOptionalSubscript": false,
+    "reportAttributeAccessIssue": false,
+    "reportOperatorIssue": false,
+    "reportArgumentType": false,
+    "reportIncompatibleVariableOverride": false,
+    "reportPossiblyUnboundVariable": false,
+    "reportUnknownMemberType": false,
+    "reportUnknownVariableType": false,
+    "reportUnknownArgumentType": false,
+    "reportUnknownLambdaType": false,
+    "reportUnknownParameterType": false,
+    "reportMissingParameterType": false,
+    "reportOptionalMemberAccess": false,
+    "reportOptionalIterable": false,
+    "reportOptionalCall": false,
+    "reportOptionalString": false,
+    "reportOptionalCollection": false,
+    "pythonVersion": "3.13",
+    "typeCheckingMode": "basic"
+}

@@ -8,5 +8,8 @@
   "documentation": "https://github.com/jmerifjKriwe/hacs-room-ventilation-advisor",
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/jmerifjKriwe/hacs-room-ventilation-advisor/issues",
+  "platforms": [
+    "sensor"
+  ],
   "version": "0.0.0"
 }

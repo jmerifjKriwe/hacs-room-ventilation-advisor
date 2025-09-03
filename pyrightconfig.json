@@ -1,0 +1,14 @@
+{
+    "include": [
+        "."
+    ],
+    "exclude": [
+        "**/__pycache__",
+        "**/.pytest_cache"
+    ],
+    "reportMissingImports": true,
+    "reportMissingTypeStubs": false,
+    "reportIncompatibleVariableOverride": false,
+    "pythonVersion": "3.13",
+    "typeCheckingMode": "basic"
+}

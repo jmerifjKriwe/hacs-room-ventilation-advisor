@@ -53,3 +53,86 @@ logger:
 ## dummy configuration for room ventilation advisor
 # configuration.yaml
 
+# Template sensors for testing Room Ventilation Advisor
+template:
+  - sensor:
+      # Outdoor sensors
+      - name: "Outdoor Temperature"
+        unique_id: outdoor_temperature
+        state: "{{ (now().hour + 10) | round(1) }}"
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: "Outdoor Humidity"
+        unique_id: outdoor_humidity
+        state: "{{ (60 + (now().hour - 12) * 2) | round(0) }}"
+        unit_of_measurement: "%"
+        device_class: humidity
+        state_class: measurement
+
+      - name: "Wind Speed"
+        unique_id: wind_speed
+        state: "{{ (5 + (now().hour - 12) * 0.5) | round(1) }}"
+        unit_of_measurement: "m/s"
+        device_class: wind_speed
+        state_class: measurement
+
+      # Living Room sensors
+      - name: "Living Room Temperature"
+        unique_id: living_room_temperature
+        state: "{{ (20 + (now().hour - 12) * 0.3) | round(1) }}"
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: "Living Room Humidity"
+        unique_id: living_room_humidity
+        state: "{{ (50 + (now().hour - 12) * 1.5) | round(0) }}"
+        unit_of_measurement: "%"
+        device_class: humidity
+        state_class: measurement
+
+      - name: "Living Room CO2"
+        unique_id: living_room_co2
+        state: "{{ (800 + (now().hour - 12) * 50) | round(0) }}"
+        unit_of_measurement: "ppm"
+        device_class: carbon_dioxide
+        state_class: measurement
+
+      # Additional room sensors for testing
+      - name: "Bedroom Temperature"
+        unique_id: bedroom_temperature
+        state: "{{ (18 + (now().hour - 12) * 0.2) | round(1) }}"
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: "Bedroom Humidity"
+        unique_id: bedroom_humidity
+        state: "{{ (45 + (now().hour - 12) * 1.2) | round(0) }}"
+        unit_of_measurement: "%"
+        device_class: humidity
+        state_class: measurement
+
+      - name: "Bedroom CO2"
+        unique_id: bedroom_co2
+        state: "{{ (750 + (now().hour - 12) * 40) | round(0) }}"
+        unit_of_measurement: "ppm"
+        device_class: carbon_dioxide
+        state_class: measurement
+
+# Binary sensors for window states
+binary_sensor:
+  - platform: template
+    sensors:
+      living_room_window:
+        friendly_name: "Living Room Window"
+        value_template: "{{ now().hour > 6 and now().hour < 22 }}"
+        device_class: window
+
+      bedroom_window:
+        friendly_name: "Bedroom Window"
+        value_template: "{{ now().hour > 8 and now().hour < 20 }}"
+        device_class: window
+

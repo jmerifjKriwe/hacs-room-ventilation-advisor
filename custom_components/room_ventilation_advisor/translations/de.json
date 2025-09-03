@@ -1,1 +1,180 @@
-{}
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "Raum-Lüftungsberater Einrichtung",
+                "description": "Konfigurieren Sie Außensensoren und Grundeinstellungen.",
+                "data": {
+                    "name": "Integrationsname",
+                    "outdoor_temp_sensor": "Außentemperatursensor",
+                    "outdoor_humidity_sensor": "Außenluftfeuchtigkeitssensor",
+                    "wind_sensor": "Windgeschwindigkeitssensor",
+                    "scan_interval": "Aktualisierungsintervall (Sekunden)"
+                }
+            },
+            "room_setup": {
+                "title": "Raumkonfiguration",
+                "description": "Konfigurieren Sie Sensoren für jeden Raum. Sie können bis zu 20 Räume hinzufügen.",
+                "data": {
+                    "room_name": "Raumname",
+                    "temp_sensor": "Innentemperatursensor",
+                    "humidity_sensor": "Innenluftfeuchtigkeitssensor",
+                    "room_type": "Raumtyp",
+                    "co2_sensor": "CO2-Sensor (optional)",
+                    "enabled": "Raum aktivieren",
+                    "add_another_room": "Weiteren Raum hinzufügen"
+                },
+                "data_description": {
+                    "rooms_configured": "Konfigurierte Räume: {rooms_configured}"
+                }
+            }
+        },
+        "error": {
+            "cannot_connect": "Verbindung fehlgeschlagen",
+            "invalid_auth": "Ungültige Authentifizierung",
+            "unknown": "Unerwarteter Fehler"
+        },
+        "abort": {
+            "already_configured": "Gerät ist bereits konfiguriert"
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "title": "Raum-Lüftungsberater Optionen",
+                "description": "Konfigurieren Sie zusätzliche Optionen.",
+                "data": {
+                    "configure_basic": "Grundeinstellungen konfigurieren",
+                    "configure_rooms": "Raumverwaltung konfigurieren",
+                    "configure_advanced": "Erweiterte Einstellungen konfigurieren"
+                },
+                "data_description": {
+                    "basic_desc": "Scan-Intervall, Wind-Faktor und Raumeinstellungen konfigurieren",
+                    "rooms_desc": "Räume hinzufügen, entfernen oder ändern",
+                    "advanced_desc": "Erweiterte Lüftungsberechnungsparameter konfigurieren"
+                }
+            },
+            "basic": {
+                "title": "Grundeinstellungen",
+                "description": "Konfigurieren Sie grundlegende Lüftungseinstellungen.",
+                "data": {
+                    "scan_interval": "Aktualisierungsintervall (Sekunden)",
+                    "enable_wind_factor": "Windfaktor aktivieren",
+                    "outdoor_temp_sensor": "Außentemperatursensor",
+                    "outdoor_humidity_sensor": "Außenluftfeuchtigkeitssensor",
+                    "wind_sensor": "Windgeschwindigkeitssensor"
+                }
+            },
+            "rooms": {
+                "title": "Raumverwaltung",
+                "description": "Verwalten Sie Raumkonfigurationen für Lüftungsüberwachung.",
+                "data": {
+                    "add_room": "Neuen Raum hinzufügen",
+                    "edit_room": "Vorhandenen Raum bearbeiten",
+                    "room_to_edit": "Zu bearbeitenden Raum auswählen",
+                    "remove_room": "Raum entfernen",
+                    "room_to_remove": "Zu entfernenden Raum auswählen"
+                },
+                "data_description": {
+                    "current_rooms": "Aktuell konfigurierte Räume: {current_rooms}",
+                    "max_rooms": "Maximale Anzahl Räume: {max_rooms}"
+                }
+            },
+            "add_room": {
+                "title": "Neuen Raum hinzufügen",
+                "description": "Konfigurieren Sie einen neuen Raum für Lüftungsüberwachung.",
+                "data": {
+                    "room_name": "Raumname",
+                    "temp_sensor": "Temperatursensor",
+                    "humidity_sensor": "Feuchtigkeitssensor",
+                    "room_type": "Raumtyp",
+                    "co2_sensor": "CO2-Sensor (optional)",
+                    "enabled": "Raum aktivieren"
+                }
+            },
+            "edit_room": {
+                "title": "Raum bearbeiten",
+                "description": "Konfiguration für Raum ändern: {room_name}",
+                "data": {
+                    "temp_sensor": "Temperatursensor",
+                    "humidity_sensor": "Feuchtigkeitssensor",
+                    "room_type": "Raumtyp",
+                    "co2_sensor": "CO2-Sensor (optional)",
+                    "enabled": "Raum aktivieren"
+                }
+            },
+            "remove_room": {
+                "title": "Raum entfernen",
+                "description": "Raum '{room_name}' aus Lüftungsüberwachung entfernen.",
+                "data": {
+                    "confirm_remove": "Entfernung bestätigen"
+                }
+            },
+            "advanced": {
+                "title": "Erweiterte Lüftungseinstellungen",
+                "description": "Konfigurieren Sie erweiterte Lüftungsberechnungsparameter.",
+                "data": {
+                    "temperature_thresholds": "Temperaturschwellenwerte",
+                    "temperature_winter_good": "Winter - guter Schwellenwert (°C)",
+                    "temperature_winter_moderate": "Winter - moderater Schwellenwert (°C)",
+                    "temperature_summer_good": "Sommer - guter Schwellenwert (°C)",
+                    "temperature_summer_moderate": "Sommer - moderater Schwellenwert (°C)",
+                    "temperature_default_good": "Standard - guter Schwellenwert (°C)",
+                    "temperature_default_moderate": "Standard - moderater Schwellenwert (°C)",
+                    "humidity_thresholds": "Feuchtigkeitsschwellenwerte",
+                    "humidity_good": "Feuchte - guter Schwellenwert (g/m³)",
+                    "humidity_moderate": "Feuchte - moderater Schwellenwert (g/m³)",
+                    "co2_thresholds": "CO2-Schwellenwerte",
+                    "co2_very_poor": "CO2 - sehr schlecht (ppm)",
+                    "co2_poor": "CO2 - schlecht (ppm)",
+                    "co2_moderate": "CO2 - moderat (ppm)",
+                    "wind_thresholds": "Windschwellenwerte",
+                    "wind_no_effect": "Wind - Schwellenwert ohne Effekt (m/s)",
+                    "wind_moderate_effect": "Wind - Schwellenwert für moderaten Effekt (m/s)",
+                    "score_weights": "Bewertungsgewichte",
+                    "weight_temperature": "Gewichtung: Temperatur",
+                    "weight_humidity": "Gewichtung: Feuchtigkeit",
+                    "weight_co2": "Gewichtung: CO2",
+                    "weight_time": "Gewichtung: Tageszeit",
+                    "time_factors": "Zeitfaktoren"
+                },
+                "data_description": {
+                    "temperature_thresholds": "Temperaturdifferenzschwellen für verschiedene Jahreszeiten anpassen",
+                    "temperature_winter_good": "Schwellenwert, ab dem Temperaturdifferenz im Winter als 'gut' gilt",
+                    "temperature_winter_moderate": "Schwellenwert, ab dem Temperaturdifferenz im Winter als 'moderat' gilt",
+                    "temperature_summer_good": "Schwellenwert, ab dem Temperaturdifferenz im Sommer als 'gut' gilt",
+                    "temperature_summer_moderate": "Schwellenwert, ab dem Temperaturdifferenz im Sommer als 'moderat' gilt",
+                    "temperature_default_good": "Standard-Gut-Schwellenwert, falls saisonale Werte fehlen",
+                    "temperature_default_moderate": "Standard-Moderat-Schwellenwert, falls saisonale Werte fehlen",
+                    "humidity_thresholds": "Absolute Feuchtigkeitsdifferenzschwellen konfigurieren",
+                    "humidity_good": "Schwellenwert für gute absolute Feuchtigkeitsdifferenz",
+                    "humidity_moderate": "Schwellenwert für moderate absolute Feuchtigkeitsdifferenz",
+                    "co2_thresholds": "CO2-Grenzwerte für Luftqualitätsbewertung festlegen",
+                    "co2_very_poor": "Schwellenwert, ab dem Lüftung als sehr schlecht gilt",
+                    "co2_poor": "Schwellenwert, ab dem Lüftung als schlecht gilt",
+                    "co2_moderate": "Schwellenwert, ab dem Lüftung als moderat gilt",
+                    "wind_thresholds": "Windgeschwindigkeitseffekte auf Lüftung konfigurieren",
+                    "wind_no_effect": "Windgeschwindigkeit, unterhalb der kein Effekt erwartet wird",
+                    "wind_moderate_effect": "Windgeschwindigkeit, oberhalb der ein moderater Effekt erwartet wird",
+                    "score_weights": "Die relative Bedeutung verschiedener Faktoren anpassen",
+                    "weight_temperature": "Relative Gewichtung der Temperaturkomponente",
+                    "weight_humidity": "Relative Gewichtung der Feuchtekomponente",
+                    "weight_co2": "Relative Gewichtung der CO2-Komponente",
+                    "weight_time": "Relative Gewichtung der Tageszeit-Komponente",
+                    "time_factors": "Zeitbasierte Lüftungsmuster konfigurieren"
+                }
+            }
+        }
+    },
+    "selector": {
+        "room_type": {
+            "options": {
+                "living_room": "Wohnzimmer",
+                "bedroom": "Schlafzimmer",
+                "bathroom": "Badezimmer",
+                "kitchen": "Küche",
+                "office": "Büro"
+            }
+        }
+    }
+}

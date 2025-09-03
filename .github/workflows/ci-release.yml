@@ -5,7 +5,8 @@ on:
     branches: ['*']
   pull_request:
 
-permissions: read-all
+permissions:
+  contents: write
 
 jobs:
   test:
@@ -94,9 +95,13 @@ jobs:
           echo "HEAD: $HEAD_SHA"
           echo "UPSTREAM: $UPSTREAM_SHA"
           if [ "$HEAD_SHA" != "$UPSTREAM_SHA" ]; then
-            printf >&2 '%s\n' "[HEAD SHA] $HEAD_SHA != $UPSTREAM_SHA [UPSTREAM SHA]"
-            printf >&2 '%s\n' "::error::Upstream has changed, aborting release..."
-            exit 1
+            if git merge-base --is-ancestor "$HEAD_SHA" "$UPSTREAM_SHA"; then
+              echo "HEAD is an ancestor of UPSTREAM, proceeding with release."
+            else
+              printf >&2 '%s\n' "[HEAD SHA] $HEAD_SHA != $UPSTREAM_SHA [UPSTREAM SHA]"
+              printf >&2 '%s\n' "::error::Upstream has diverged, aborting release..."
+              exit 1
+            fi
           fi
 
       - name: Action | Semantic Version Release

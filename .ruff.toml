@@ -15,6 +15,21 @@ ignore = [
     "ISC001", # incompatible with formatter
 ]
 
+[lint.per-file-ignores]
+"tests/*.py" = [
+    "S101", # assert statements are allowed in tests
+    "PLR2004", # magic values are common in tests
+    "FBT001", # boolean positional arguments are common in test helpers
+    "FBT002", # boolean default positional arguments are common in test helpers
+    "FBT003", # boolean positional values are common in test calls
+    "PLR0913", # too many arguments are common in comprehensive test functions
+    "SLF001", # private member access is common in tests
+    "F841", # unused variables are common in tests
+    "C901", # complex structures are common in comprehensive E2E tests
+    "PLR0912", # too many branches are common in comprehensive E2E tests
+    "PLR0915", # too many statements are common in comprehensive E2E tests
+]
+
 [lint.flake8-pytest-style]
 fixture-parentheses = false
 

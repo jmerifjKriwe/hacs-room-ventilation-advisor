@@ -1,0 +1,156 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "Room Ventilation Advisor Setup",
+                "description": "Configure outdoor sensors and basic settings.",
+                "data": {
+                    "name": "Integration Name",
+                    "outdoor_temp_sensor": "Outdoor Temperature Sensor",
+                    "outdoor_humidity_sensor": "Outdoor Humidity Sensor",
+                    "wind_sensor": "Wind Speed Sensor",
+                    "scan_interval": "Update Interval (seconds)"
+                }
+            },
+            "room_setup": {
+                "title": "Room Configuration",
+                "description": "Configure sensors for each room. You can add up to 6 rooms.",
+                "data": {
+                    "room_name": "Room Name",
+                    "temp_sensor": "Indoor Temperature Sensor",
+                    "humidity_sensor": "Indoor Humidity Sensor",
+                    "room_type": "Room Type",
+                    "co2_sensor": "CO2 Sensor (optional)",
+                    "enabled": "Enable Room",
+                    "add_another_room": "Add Another Room"
+                },
+                "data_description": {
+                    "rooms_configured": "Rooms configured: {rooms_configured}"
+                }
+            }
+        },
+        "error": {
+            "cannot_connect": "Failed to connect",
+            "invalid_auth": "Invalid authentication",
+            "unknown": "Unexpected error"
+        },
+        "abort": {
+            "already_configured": "Device is already configured"
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "title": "Room Ventilation Advisor Options",
+                "description": "Configure additional options.",
+                "data": {
+                    "scan_interval": "Update Interval (seconds)",
+                    "enable_wind_factor": "Enable Wind Factor",
+                    "enable_living_room": "Enable Living Room",
+                    "enable_bedroom": "Enable Bedroom",
+                    "enable_bathroom": "Enable Bathroom",
+                    "enable_kitchen": "Enable Kitchen",
+                    "enable_office": "Enable Office"
+                },
+                "menu_options": {
+                    "basic": "Basic Settings",
+                    "rooms": "Room Management",
+                    "advanced": "Advanced Ventilation Settings"
+                }
+            },
+            "advanced": {
+                "title": "Advanced Ventilation Settings",
+                "description": "Configure advanced ventilation calculation parameters.",
+                "data": {
+                    "temperature_thresholds": "Temperature Thresholds",
+                    "humidity_thresholds": "Humidity Thresholds",
+                    "co2_thresholds": "CO2 Thresholds",
+                    "wind_thresholds": "Wind Thresholds",
+                    "score_weights": "Score Weights",
+                    "time_factors": "Time Factors"
+                },
+                "data_description": {
+                    "temperature_thresholds": "Adjust temperature difference thresholds for different seasons",
+                    "humidity_thresholds": "Configure absolute humidity difference thresholds",
+                    "co2_thresholds": "Set CO2 level thresholds for air quality assessment",
+                    "wind_thresholds": "Configure wind speed effects on ventilation",
+                    "score_weights": "Adjust the relative importance of different factors",
+                    "time_factors": "Configure time-based ventilation patterns"
+                }
+            }
+        },
+        "options": {
+            "step": {
+                "init": {
+                    "title": "Room Ventilation Advisor Options",
+                    "description": "Configure additional options.",
+                    "data": {
+                        "configure_basic": "Configure Basic Settings",
+                        "configure_rooms": "Configure Room Management",
+                        "configure_advanced": "Configure Advanced Settings"
+                    },
+                    "data_description": {
+                        "basic_desc": "Configure scan interval, wind factor, and room settings",
+                        "rooms_desc": "Add, remove, or modify room configurations",
+                        "advanced_desc": "Configure advanced ventilation calculation parameters"
+                    }
+                },
+                "rooms": {
+                    "title": "Room Management",
+                    "description": "Manage room configurations for ventilation monitoring.",
+                    "data": {
+                        "add_room": "Add New Room",
+                        "edit_room": "Edit Existing Room",
+                        "room_to_edit": "Select Room to Edit",
+                        "remove_room": "Remove Room",
+                        "room_to_remove": "Select Room to Remove"
+                    },
+                    "data_description": {
+                        "current_rooms": "Currently configured rooms: {current_rooms}",
+                        "max_rooms": "Maximum rooms allowed: {max_rooms}"
+                    }
+                },
+                "add_room": {
+                    "title": "Add New Room",
+                    "description": "Configure a new room for ventilation monitoring.",
+                    "data": {
+                        "room_name": "Room Name",
+                        "temp_sensor": "Temperature Sensor",
+                        "humidity_sensor": "Humidity Sensor",
+                        "room_type": "Room Type",
+                        "co2_sensor": "CO2 Sensor (optional)",
+                        "enabled": "Enable Room"
+                    }
+                },
+                "edit_room": {
+                    "title": "Edit Room",
+                    "description": "Modify configuration for room: {room_name}",
+                    "data": {
+                        "temp_sensor": "Temperature Sensor",
+                        "humidity_sensor": "Humidity Sensor",
+                        "room_type": "Room Type",
+                        "co2_sensor": "CO2 Sensor (optional)",
+                        "enabled": "Enable Room"
+                    }
+                },
+                "remove_room": {
+                    "title": "Remove Room",
+                    "description": "Remove room '{room_name}' from ventilation monitoring.",
+                    "data": {
+                        "confirm_remove": "Confirm Removal"
+                    }
+                }
+            }
+        },
+        "selector": {
+            "room_type": {
+                "options": {
+                    "living_room": "Living Room",
+                    "bedroom": "Bedroom",
+                    "bathroom": "Bathroom",
+                    "kitchen": "Kitchen",
+                    "office": "Office"
+                }
+            }
+        }
+    }

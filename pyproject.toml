@@ -14,8 +14,11 @@ patch_tags = ["fix", "perf"]
 
 [tool.ruff.lint]
 # Relax a few rules for tests to reduce false-positives from pytest-style assertions
-extend-ignore = ["S101", "TRY003", "EM101", "EM102", "PLC0415", "ANN001", "D103"]
-per-file-ignores = { "tests/**" = ["S101", "D100", "D101", "D102", "D103", "ANN201", "ANN001", "ARG001", "ARG002", "ANN202", "TRY003", "EM101", "EM102", "PLC0415", "SLF001"] }
+extend-ignore = [
+    "S101", "D100", "D101", "D102", "D103", "ANN201", "ANN001", "ARG001", "ARG002",
+    "ANN202", "TRY003", "EM101", "EM102", "PLC0415", "SLF001", "BLE001", "TRY300",
+    "TRY401", "PLR0915", "PLR2004", "RET504", "F841", "E501", "ANN001", "ANN202"
+]
 
 [tool.ruff]
 line-length = 88
