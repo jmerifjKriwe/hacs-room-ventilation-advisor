@@ -649,7 +649,7 @@ class TestRoomVentilationAdvisorOptionsFlow:
         assert result["step_id"] == "rooms"
 
     async def test_options_flow_add_room(self, hass: HomeAssistant) -> None:
-    async def test_options_flow_add_room(self, hass: HomeAssistant, monkeypatch) -> None:
+    async def test_options_flow_add_room(self, hass: HomeAssistant, monkeypatch: pytest.MonkeyPatch) -> None:
         """Test adding a new room through options flow."""
         config_entry = MockConfigEntry(
             domain=DOMAIN,
@@ -673,6 +673,7 @@ class TestRoomVentilationAdvisorOptionsFlow:
         flow.hass.config_entries.async_reload = mock_reload
 
         # Mock the environment to simulate production (not testing)
+        # Mock the environment to simulate production (not testing) to trigger reload
         monkeypatch.delenv("PYTEST_CURRENT_TEST", raising=False)
 
         original_env = os.environ.get("PYTEST_CURRENT_TEST")
@@ -897,7 +898,7 @@ class TestRoomVentilationAdvisorOptionsFlow:
                         CONF_HUMIDITY_SENSOR: "sensor.humidity",
                         CONF_TEMP_SENSOR: "sensor.temperature",
                         CONF_CO2_SENSOR: None,  # Initially None
-                        CONF_CO2_SENSOR: "sensor.initial_co2",
+                        CONF_CO2_SENSOR: "sensor.initial_co2", # Initially set
                         CONF_ENABLED: True,
                     }
                 }
@@ -906,6 +907,7 @@ class TestRoomVentilationAdvisorOptionsFlow:
         config_entry.add_to_hass(hass)
 
         # Create options flow
+        # Initialize and navigate the options flow to the edit_room step
         flow = RoomVentilationAdvisorOptionsFlow(config_entry)
         flow.hass = hass
 
@@ -916,12 +918,12 @@ class TestRoomVentilationAdvisorOptionsFlow:
         result = await flow.async_step_rooms(
             {"edit_room": True, "room_to_edit": "Test Room"}
         )
-        assert result["type"] == FlowResultType.FORM
-        assert result["step_id"] == "edit_room"
 
         # Test schema validation with empty CO2 sensor string
         current_config = config_entry.data[CONF_ROOMS]["Test Room"]
         schema = flow._get_room_schema(current_config)
+        assert result["type"] == FlowResultType.FORM
+        assert result["step_id"] == "edit_room"
 
         # This should not raise an exception with None (empty selection)
         test_data = {
@@ -934,17 +936,19 @@ class TestRoomVentilationAdvisorOptionsFlow:
             CONF_HUMIDITY_SENSOR: "sensor.humidity",
             CONF_TEMP_SENSOR: "sensor.temperature",
             CONF_CO2_SENSOR: None,  # None - should be handled gracefully
-            CONF_CO2_SENSOR: "",  # Empty string should be converted to None
+            CONF_CO2_SENSOR: "",  # An empty string should be converted to None
             CONF_ENABLED: True,
         }
 
         # Validate the data against the schema
         validated_data = schema(test_data)
         result = await flow.async_step_edit_room(updated_room_data)
-        assert result["type"] == FlowResultType.CREATE_ENTRY
 
         # None should remain None
         assert validated_data[CONF_CO2_SENSOR] is None
+        assert result["type"] == FlowResultType.CREATE_ENTRY
+
+        # Verify that the empty string was correctly stored as None
         assert config_entry.data[CONF_ROOMS]["Test Room"][CONF_CO2_SENSOR] is None
 
     async def test_options_flow_remove_room_placeholder_and_functionality(
