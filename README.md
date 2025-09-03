@@ -9,7 +9,7 @@
 
 Short introduction
 ------------------
-This integration provides a room ventilation advisor for Home Assistant, helping users optimize their indoor air quality by suggesting when to ventilate based on various factors.
+This integration provides a Room Ventilation Advisor for Home Assistant, helping users optimize their indoor air quality by suggesting when to ventilate based on various factors.
 
 Licence
 ------------------------------------

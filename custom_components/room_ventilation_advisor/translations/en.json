@@ -14,7 +14,7 @@
             },
             "room_setup": {
                 "title": "Room Configuration",
-                "description": "Configure sensors for each room. You can add up to 20 rooms.",
+                "description": "Configure sensors for each room. You can add up to 20 rooms.\n\nRooms configured: {rooms_configured}",
                 "data": {
                     "room_name": "Room Name",
                     "temp_sensor": "Indoor Temperature Sensor",
@@ -23,9 +23,6 @@
                     "co2_sensor": "CO2 Sensor (optional)",
                     "enabled": "Enable Room",
                     "add_another_room": "Add Another Room"
-                },
-                "data_description": {
-                    "rooms_configured": "Rooms configured: {rooms_configured}"
                 }
             }
         },
@@ -105,7 +102,7 @@
             },
             "remove_room": {
                 "title": "Remove Room",
-                "description": "Remove room '{room_name}' from ventilation monitoring.",
+                "description": "Remove room {room_name} from ventilation monitoring.",
                 "data": {
                     "confirm_remove": "Confirm Removal"
                 }

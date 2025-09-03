@@ -50,7 +50,7 @@ logger:
     custom_components.room_ventilation_advisor: debug
 
 
-## dummy configuration for room ventilation advisor
+## dummy configuration for Room Ventilation Advisor
 # configuration.yaml
 
 # Template sensors for testing Room Ventilation Advisor

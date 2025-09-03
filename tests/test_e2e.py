@@ -123,7 +123,7 @@ async def _load_integration_manually(hass: HomeAssistant) -> Integration:
                 ),
                 manifest={
                     "domain": DOMAIN,
-                    "name": "Room ventilation advisor",
+                    "name": "Room Ventilation Advisor",
                     "config_flow": True,
                     "version": "0.0.0",
                     "platforms": ["sensor"],  # Explicitly declare platforms
