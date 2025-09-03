@@ -46,9 +46,9 @@
                     "configure_advanced": "Configure Advanced Settings"
                 },
                 "data_description": {
-                    "basic_desc": "Configure scan interval, wind factor, and room settings",
-                    "rooms_desc": "Add, remove, or modify room configurations",
-                    "advanced_desc": "Configure advanced ventilation calculation parameters"
+                    "configure_basic": "Configure scan interval, wind factor, and room settings",
+                    "configure_rooms": "Add, remove, or modify room configurations",
+                    "configure_advanced": "Configure advanced ventilation calculation parameters"
                 }
             },
             "basic": {
@@ -70,7 +70,9 @@
                     "edit_room": "Edit Existing Room",
                     "room_to_edit": "Select Room to Edit",
                     "remove_room": "Remove Room",
-                    "room_to_remove": "Select Room to Remove"
+                    "room_to_remove": "Select Room to Remove",
+                    "current_rooms": "Currently configured rooms: {current_rooms}",
+                    "max_rooms": "Maximum rooms allowed: {max_rooms}"
                 },
                 "data_description": {
                     "current_rooms": "Currently configured rooms: {current_rooms}",
