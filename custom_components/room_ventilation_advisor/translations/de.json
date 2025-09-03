@@ -46,9 +46,9 @@
                     "configure_advanced": "Erweiterte Einstellungen konfigurieren"
                 },
                 "data_description": {
-                    "basic_desc": "Scan-Intervall, Wind-Faktor und Raumeinstellungen konfigurieren",
-                    "rooms_desc": "Räume hinzufügen, entfernen oder ändern",
-                    "advanced_desc": "Erweiterte Lüftungsberechnungsparameter konfigurieren"
+                    "configure_basic": "Scan-Intervall, Wind-Faktor und Raumeinstellungen konfigurieren",
+                    "configure_rooms": "Räume hinzufügen, entfernen oder ändern",
+                    "configure_advanced": "Erweiterte Lüftungsberechnungsparameter konfigurieren"
                 }
             },
             "basic": {
