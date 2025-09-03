@@ -46,9 +46,9 @@
                     "configure_advanced": "Configure Advanced Settings"
                 },
                 "data_description": {
-                    "basic_desc": "Configure scan interval, wind factor, and room settings",
-                    "rooms_desc": "Add, remove, or modify room configurations",
-                    "advanced_desc": "Configure advanced ventilation calculation parameters"
+                    "configure_basic": "Configure scan interval, wind factor, and room settings",
+                    "configure_rooms": "Add, remove, or modify room configurations",
+                    "configure_advanced": "Configure advanced ventilation calculation parameters"
                 }
             },
             "basic": {
