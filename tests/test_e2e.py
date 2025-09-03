@@ -1,6 +1,5 @@
 """End-to-End tests for Room Ventilation Advisor integration."""
 
-# ruff: noqa: ANN401
 # pyright: reportTypedDictNotRequiredAccess=false,reportOptionalSubscript=false,reportOperatorIssue=false,reportArgumentType=false,reportAttributeAccessIssue=false
 
 import asyncio
@@ -10,7 +9,6 @@ import sys
 from collections.abc import Generator
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Any
 
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResultType
@@ -72,7 +70,7 @@ def suppress_expected_test_errors() -> Generator[None]:
             logger.handlers.extend(handlers)
 
 
-async def _init_basic_flow(hass: HomeAssistant) -> Any:
+async def _init_basic_flow(hass: HomeAssistant) -> object:
     """Start the initial config flow using the Home Assistant flow manager."""
     # Ensure integration is available by setting up Python path
     await _load_integration_manually(hass)
@@ -143,7 +141,7 @@ async def _load_integration_manually(hass: HomeAssistant) -> Integration:
         return integration
 
 
-async def _setup_platforms_for_entry(hass: HomeAssistant, config_entry: Any) -> bool:
+async def _setup_platforms_for_entry(hass: HomeAssistant, config_entry: object) -> bool:
     """Manually set up platforms for a config entry in test environment."""
     try:
         # Import the platforms list and sensor module
@@ -154,17 +152,19 @@ async def _setup_platforms_for_entry(hass: HomeAssistant, config_entry: Any) -> 
         entities_added = []
 
         def async_add_entities(
-            new_entities: Any,
+            new_entities: object,
             update_before_add: bool = False,
         ) -> None:
             """Mock function to add entities to Home Assistant."""
             # update_before_add required by HA API but unused in test
             _ = update_before_add
-            for entity in new_entities:
+            # Always cast to list to avoid 'object is not iterable' error
+            for entity in list(new_entities):
                 # Generate entity_id if not set
-                if entity.entity_id is None:
+                if getattr(entity, "entity_id", None) is None:
                     # Generate entity_id based on platform and unique_id
-                    entity_id = f"sensor.{entity.unique_id.replace('_', '_')}"
+                    unique_id = getattr(entity, "unique_id", "unknown")
+                    entity_id = f"sensor.{unique_id.replace('_', '_')}"
                     entity.entity_id = entity_id
 
                 _LOGGER.info("Adding sensor entity: %s", entity.entity_id)
@@ -172,13 +172,13 @@ async def _setup_platforms_for_entry(hass: HomeAssistant, config_entry: Any) -> 
                 # Set the entity state directly (simplified for test environment)
                 hass.states.async_set(
                     entity.entity_id,
-                    entity.native_value,
-                    entity.extra_state_attributes,
+                    getattr(entity, "native_value", None),
+                    getattr(entity, "extra_state_attributes", None),
                 )
                 _LOGGER.info(
                     "Entity %s registered with state: %s",
                     entity.entity_id,
-                    entity.native_value,
+                    getattr(entity, "native_value", None),
                 )
 
         # Call our integration's setup function
@@ -208,7 +208,7 @@ async def _setup_platforms_for_entry(hass: HomeAssistant, config_entry: Any) -> 
         return True
 
 
-async def _configure_basic(hass: HomeAssistant, flow_result: Any) -> Any:
+async def _configure_basic(hass: HomeAssistant, flow_result: object) -> object:
     """Configure basic settings for the integration and proceed to room setup."""
     basic_config = {
         "name": "Test Ventilation Advisor",
@@ -233,9 +233,9 @@ async def _configure_basic(hass: HomeAssistant, flow_result: Any) -> Any:
 
 async def _add_room_via_flow(
     hass: HomeAssistant,
-    flow_result: Any,
+    flow_result: object,
     room_cfg: dict,
-) -> Any:
+) -> object:
     """Submit a room configuration during the config flow and return the result."""
     return await hass.config_entries.flow.async_configure(
         flow_result.get("flow_id"),
@@ -243,7 +243,7 @@ async def _add_room_via_flow(
     )
 
 
-async def _start_options_flow(hass: HomeAssistant, entry_id: str) -> Any:
+async def _start_options_flow(hass: HomeAssistant, entry_id: str) -> object:
     """Start the options flow and return the initial result."""
     result = await hass.config_entries.options.async_init(entry_id)
     if result.get("type") is not FlowResultType.FORM:
@@ -256,7 +256,8 @@ async def _start_options_flow(hass: HomeAssistant, entry_id: str) -> Any:
 
 
 async def test_complete_integration_lifecycle(hass: HomeAssistant) -> None:
-    """End-to-end scenario exercising setup, options flow, and removal.
+    """
+    End-to-end scenario exercising setup, options flow, and removal.
 
     This test intentionally uses real integration code without mocks where
     possible. It imports the integration modules so Home Assistant's loader

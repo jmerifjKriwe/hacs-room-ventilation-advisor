@@ -1,4 +1,9 @@
-"""Ventilation calculation logic."""
+"""
+Ventilation calculation logic for Room Ventilation Advisor.
+
+Provides calculation of ventilation scores and factors for rooms
+based on sensor data and configuration.
+"""
 
 import logging
 import math
@@ -60,94 +65,117 @@ class VentilationCalculator:
         # Temperature thresholds
         temp_thresholds: dict[str, Any] = advanced.get(CONF_TEMPERATURE_THRESHOLDS, {})
         self.temp_winter_good: float = temp_thresholds.get(
-            "winter_good", DEFAULT_TEMPERATURE_THRESHOLDS["winter_good"],
+            "winter_good",
+            DEFAULT_TEMPERATURE_THRESHOLDS["winter_good"],
         )
         self.temp_winter_moderate: float = temp_thresholds.get(
-            "winter_moderate", DEFAULT_TEMPERATURE_THRESHOLDS["winter_moderate"],
+            "winter_moderate",
+            DEFAULT_TEMPERATURE_THRESHOLDS["winter_moderate"],
         )
         self.temp_summer_good: float = temp_thresholds.get(
-            "summer_good", DEFAULT_TEMPERATURE_THRESHOLDS["summer_good"],
+            "summer_good",
+            DEFAULT_TEMPERATURE_THRESHOLDS["summer_good"],
         )
         self.temp_summer_moderate: float = temp_thresholds.get(
-            "summer_moderate", DEFAULT_TEMPERATURE_THRESHOLDS["summer_moderate"],
+            "summer_moderate",
+            DEFAULT_TEMPERATURE_THRESHOLDS["summer_moderate"],
         )
         self.temp_default_good: float = temp_thresholds.get(
-            "default_good", DEFAULT_TEMPERATURE_THRESHOLDS["default_good"],
+            "default_good",
+            DEFAULT_TEMPERATURE_THRESHOLDS["default_good"],
         )
         self.temp_default_moderate: float = temp_thresholds.get(
-            "default_moderate", DEFAULT_TEMPERATURE_THRESHOLDS["default_moderate"],
+            "default_moderate",
+            DEFAULT_TEMPERATURE_THRESHOLDS["default_moderate"],
         )
 
         # Humidity thresholds
         humidity_thresholds: dict[str, Any] = advanced.get(CONF_HUMIDITY_THRESHOLDS, {})
         self.humidity_good: float = humidity_thresholds.get(
-            "good", DEFAULT_HUMIDITY_THRESHOLDS["good"],
+            "good",
+            DEFAULT_HUMIDITY_THRESHOLDS["good"],
         )
         self.humidity_moderate: float = humidity_thresholds.get(
-            "moderate", DEFAULT_HUMIDITY_THRESHOLDS["moderate"],
+            "moderate",
+            DEFAULT_HUMIDITY_THRESHOLDS["moderate"],
         )
 
         # CO2 thresholds
         co2_thresholds: dict[str, Any] = advanced.get(CONF_CO2_THRESHOLDS, {})
         self.co2_very_poor: float = co2_thresholds.get(
-            "very_poor", DEFAULT_CO2_THRESHOLDS["very_poor"],
+            "very_poor",
+            DEFAULT_CO2_THRESHOLDS["very_poor"],
         )
         self.co2_poor: float = co2_thresholds.get(
-            "poor", DEFAULT_CO2_THRESHOLDS["poor"],
+            "poor",
+            DEFAULT_CO2_THRESHOLDS["poor"],
         )
         self.co2_moderate: float = co2_thresholds.get(
-            "moderate", DEFAULT_CO2_THRESHOLDS["moderate"],
+            "moderate",
+            DEFAULT_CO2_THRESHOLDS["moderate"],
         )
 
         # Wind thresholds
         wind_thresholds: dict[str, Any] = advanced.get(CONF_WIND_THRESHOLDS, {})
         self.wind_no_effect: float = wind_thresholds.get(
-            "no_effect", DEFAULT_WIND_THRESHOLDS["no_effect"],
+            "no_effect",
+            DEFAULT_WIND_THRESHOLDS["no_effect"],
         )
         self.wind_moderate_effect: float = wind_thresholds.get(
-            "moderate_effect", DEFAULT_WIND_THRESHOLDS["moderate_effect"],
+            "moderate_effect",
+            DEFAULT_WIND_THRESHOLDS["moderate_effect"],
         )
 
         # Score weights
         score_weights: dict[str, Any] = advanced.get(CONF_SCORE_WEIGHTS, {})
         self.weight_temp: float = score_weights.get(
-            "temperature", DEFAULT_SCORE_WEIGHTS["temperature"],
+            "temperature",
+            DEFAULT_SCORE_WEIGHTS["temperature"],
         )
         self.weight_humidity: float = score_weights.get(
-            "humidity", DEFAULT_SCORE_WEIGHTS["humidity"],
+            "humidity",
+            DEFAULT_SCORE_WEIGHTS["humidity"],
         )
         self.weight_co2: float = score_weights.get("co2", DEFAULT_SCORE_WEIGHTS["co2"])
         self.weight_time: float = score_weights.get(
-            "time", DEFAULT_SCORE_WEIGHTS["time"],
+            "time",
+            DEFAULT_SCORE_WEIGHTS["time"],
         )
         self.weight_temp_with_co2: float = score_weights.get(
-            "temperature_with_co2", DEFAULT_SCORE_WEIGHTS["temperature_with_co2"],
+            "temperature_with_co2",
+            DEFAULT_SCORE_WEIGHTS["temperature_with_co2"],
         )
         self.weight_humidity_with_co2: float = score_weights.get(
-            "humidity_with_co2", DEFAULT_SCORE_WEIGHTS["humidity_with_co2"],
+            "humidity_with_co2",
+            DEFAULT_SCORE_WEIGHTS["humidity_with_co2"],
         )
         self.weight_co2_with_sensor: float = score_weights.get(
-            "co2_with_sensor", DEFAULT_SCORE_WEIGHTS["co2_with_sensor"],
+            "co2_with_sensor",
+            DEFAULT_SCORE_WEIGHTS["co2_with_sensor"],
         )
         self.weight_time_with_co2: float = score_weights.get(
-            "time_with_co2", DEFAULT_SCORE_WEIGHTS["time_with_co2"],
+            "time_with_co2",
+            DEFAULT_SCORE_WEIGHTS["time_with_co2"],
         )
 
         # Time factors
         time_factors: dict[str, Any] = advanced.get(CONF_TIME_FACTORS, {})
         self.time_high: float = time_factors.get("high", DEFAULT_TIME_FACTORS["high"])
         self.time_moderate: float = time_factors.get(
-            "moderate", DEFAULT_TIME_FACTORS["moderate"],
+            "moderate",
+            DEFAULT_TIME_FACTORS["moderate"],
         )
         self.time_low: float = time_factors.get("low", DEFAULT_TIME_FACTORS["low"])
 
         # Room time patterns
         self.room_patterns: dict[str, Any] = advanced.get(
-            CONF_ROOM_TIME_PATTERNS, DEFAULT_ROOM_TIME_PATTERNS,
+            CONF_ROOM_TIME_PATTERNS,
+            DEFAULT_ROOM_TIME_PATTERNS,
         )
 
     def calculate_room_score(self, room_data: RoomData) -> float:
-        """Calculate ventilation score for a room.
+        """
+        Calculate ventilation score for a room.
 
         Returns a score between -0.5 and 1.0 where:
         - > 0.5: Good ventilation conditions
@@ -208,7 +236,9 @@ class VentilationCalculator:
         return round(score, 2)
 
     def _calculate_absolute_humidity(
-        self, humidity_percent: float, temp_celsius: float,
+        self,
+        humidity_percent: float,
+        temp_celsius: float,
     ) -> float:
         """Calculate absolute humidity in g/m³."""
         saturation_vapor_pressure = 6.112 * math.exp(
@@ -255,7 +285,10 @@ class VentilationCalculator:
         )
 
     def _calculate_co2_factor(
-        self, room_type: str, hour: int, co2: float | None = None,
+        self,
+        room_type: str,
+        hour: int,
+        co2: float | None = None,
     ) -> float:
         """Calculate CO2 factor."""
         if co2 is not None:
@@ -302,7 +335,10 @@ class VentilationCalculator:
         )
 
     def _calculate_wind_factor(
-        self, wind_speed: float, *, enable_wind: bool = True,
+        self,
+        wind_speed: float,
+        *,
+        enable_wind: bool = True,
     ) -> float:
         """Calculate wind factor."""
         if not enable_wind:

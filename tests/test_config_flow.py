@@ -205,7 +205,8 @@ class TestRoomVentilationAdvisorOptionsFlow:
         assert result["data"][CONF_SCAN_INTERVAL] == 600
 
     async def test_options_flow_basic_sensor_configuration(
-        self, hass: HomeAssistant,
+        self,
+        hass: HomeAssistant,
     ) -> None:
         """Test basic sensor configuration in options flow."""
         config_entry = MockConfigEntry(
@@ -287,14 +288,16 @@ class TestRoomVentilationAdvisorOptionsFlow:
         assert result["step_id"] == "advanced"
 
     async def test_options_flow_advanced_schema_serializable(
-        self, hass: HomeAssistant,
+        self,
+        hass: HomeAssistant,
     ) -> None:
-        """Ensure advanced options schema can be serialized to JSON.
+        """
+        Ensure advanced options schema can be serialized to JSON.
 
-        The UI serializes the voluptuous schema using
-        voluptuous_serialize.convert when serving the form. A nested
-        vol.Schema used as a mapping value can produce structures that
-        break conversion; this test ensures conversion succeeds.
+        The UI serializes the voluptuous schema using voluptuous_serialize.convert
+        when serving the form. A nested vol.Schema used as a mapping value can
+        produce structures that break conversion; this test ensures conversion
+        succeeds.
         """
         config_entry = MockConfigEntry(
             domain=DOMAIN,
@@ -323,7 +326,8 @@ class TestRoomVentilationAdvisorOptionsFlow:
         vserialize.convert(schema)
 
     async def test_options_flow_temperature_thresholds(
-        self, hass: HomeAssistant,
+        self,
+        hass: HomeAssistant,
     ) -> None:
         """Test updating temperature thresholds."""
         config_entry = MockConfigEntry(
@@ -529,7 +533,8 @@ class TestRoomVentilationAdvisorOptionsFlow:
         assert score_weights["time"] == 0.1
 
     async def test_options_flow_with_existing_settings(
-        self, hass: HomeAssistant,
+        self,
+        hass: HomeAssistant,
     ) -> None:
         """Test options flow with existing advanced settings."""
         existing_advanced = {
@@ -714,7 +719,8 @@ class TestRoomVentilationAdvisorOptionsFlow:
         )
 
     async def test_options_flow_add_room_duplicate_name(
-        self, hass: HomeAssistant,
+        self,
+        hass: HomeAssistant,
     ) -> None:
         """Test adding a room with duplicate name."""
         config_entry = MockConfigEntry(
@@ -876,7 +882,8 @@ class TestRoomVentilationAdvisorOptionsFlow:
         assert "Kitchen" in updated_data[CONF_ROOMS]  # Other room should remain
 
     async def test_options_flow_co2_sensor_schema_validation(
-        self, hass: HomeAssistant,
+        self,
+        hass: HomeAssistant,
     ) -> None:
         """Test that CO2 sensor field handles empty strings correctly."""
         # Create a mock config entry
@@ -924,12 +931,10 @@ class TestRoomVentilationAdvisorOptionsFlow:
         assert validated_data[CONF_CO2_SENSOR] is None
 
     async def test_options_flow_remove_room_placeholder_and_functionality(
-        self, hass: HomeAssistant,
+        self,
+        hass: HomeAssistant,
     ) -> None:
-        """Test that remove room placeholder replacement and functionality.
-
-        work correctly.
-        """
+        """Test remove room placeholder replacement and functionality work correctly."""
         # Create a mock config entry with a room
         config_entry = MockConfigEntry(
             domain=DOMAIN,
