@@ -30,7 +30,7 @@ async def test_async_setup_entry() -> None:
 
         assert result is True
         hass.config_entries.async_forward_entry_setups.assert_called_once_with(
-            config_entry, ["sensor"]
+            config_entry, ["sensor"],
         )
         mock_device_registry.async_get_or_create.assert_called_once()
 
@@ -58,10 +58,10 @@ async def test_async_unload_entry() -> None:
 
         assert result is True
         hass.config_entries.async_unload_platforms.assert_called_once_with(
-            config_entry, ["sensor"]
+            config_entry, ["sensor"],
         )
         mock_device_registry.async_remove_device.assert_called_once_with(
-            "test_device_id"
+            "test_device_id",
         )
 
 

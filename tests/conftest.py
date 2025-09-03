@@ -46,7 +46,7 @@ def mock_config_entry() -> dict[str, Any]:
                 CONF_ROOM_TYPE: ROOM_TYPE_LIVING_ROOM,
                 CONF_CO2_SENSOR: "sensor.living_room_co2",
                 CONF_ENABLED: True,
-            }
+            },
         },
     }
 

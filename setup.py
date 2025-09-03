@@ -11,7 +11,7 @@ setup(
     package_dir={
         "custom_components.room_ventilation_advisor": (
             "custom_components/room_ventilation_advisor"
-        )
+        ),
     },
     include_package_data=True,
     zip_safe=False,

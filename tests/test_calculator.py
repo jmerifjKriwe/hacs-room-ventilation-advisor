@@ -37,11 +37,12 @@ class TestVentilationCalculator:
 
         # This would be part of the calculator class
         def calculate_absolute_humidity(
-            humidity_percent: float, temp_celsius: float
+            humidity_percent: float,
+            temp_celsius: float,
         ) -> float:
             """Calculate absolute humidity in g/m³."""
             saturation_vapor_pressure = 6.112 * math.exp(
-                (17.67 * temp_celsius) / (temp_celsius + 243.5)
+                (17.67 * temp_celsius) / (temp_celsius + 243.5),
             )
             return (
                 (humidity_percent / 100)
@@ -117,7 +118,9 @@ class TestVentilationCalculator:
         """Test CO2 factor calculation."""
 
         def calculate_co2_factor(
-            room_type: str, hour: int, co2: float | None = None
+            room_type: str,
+            hour: int,
+            co2: float | None = None,
         ) -> float:
             if co2 is not None:
                 return (

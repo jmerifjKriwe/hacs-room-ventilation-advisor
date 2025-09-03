@@ -205,7 +205,7 @@ class TestRoomVentilationAdvisorOptionsFlow:
         assert result["data"][CONF_SCAN_INTERVAL] == 600
 
     async def test_options_flow_basic_sensor_configuration(
-        self, hass: HomeAssistant
+        self, hass: HomeAssistant,
     ) -> None:
         """Test basic sensor configuration in options flow."""
         config_entry = MockConfigEntry(
@@ -223,7 +223,7 @@ class TestRoomVentilationAdvisorOptionsFlow:
                         "co2_sensor": "sensor.living_co2",
                         "room_type": "living_room",
                         "enabled": True,
-                    }
+                    },
                 },
             },
             options={},
@@ -287,10 +287,9 @@ class TestRoomVentilationAdvisorOptionsFlow:
         assert result["step_id"] == "advanced"
 
     async def test_options_flow_advanced_schema_serializable(
-        self, hass: HomeAssistant
+        self, hass: HomeAssistant,
     ) -> None:
-        """
-        Ensure advanced options schema can be serialized to JSON.
+        """Ensure advanced options schema can be serialized to JSON.
 
         The UI serializes the voluptuous schema using
         voluptuous_serialize.convert when serving the form. A nested
@@ -324,7 +323,7 @@ class TestRoomVentilationAdvisorOptionsFlow:
         vserialize.convert(schema)
 
     async def test_options_flow_temperature_thresholds(
-        self, hass: HomeAssistant
+        self, hass: HomeAssistant,
     ) -> None:
         """Test updating temperature thresholds."""
         config_entry = MockConfigEntry(
@@ -356,8 +355,8 @@ class TestRoomVentilationAdvisorOptionsFlow:
                     "summer_moderate": 3.0,
                     "default_good": 4.5,
                     "default_moderate": 2.5,
-                }
-            }
+                },
+            },
         }
 
         result = await flow.async_step_advanced(advanced_input)
@@ -396,8 +395,8 @@ class TestRoomVentilationAdvisorOptionsFlow:
                 CONF_HUMIDITY_THRESHOLDS: {
                     "good": 3.0,
                     "moderate": 1.5,
-                }
-            }
+                },
+            },
         }
 
         result = await flow.async_step_advanced(advanced_input)
@@ -437,8 +436,8 @@ class TestRoomVentilationAdvisorOptionsFlow:
                     "very_poor": 1600,
                     "poor": 1400,
                     "moderate": 900,
-                }
-            }
+                },
+            },
         }
 
         result = await flow.async_step_advanced(advanced_input)
@@ -476,8 +475,8 @@ class TestRoomVentilationAdvisorOptionsFlow:
                 CONF_WIND_THRESHOLDS: {
                     "no_effect": 15.0,
                     "moderate_effect": 25.0,
-                }
-            }
+                },
+            },
         }
 
         result = await flow.async_step_advanced(advanced_input)
@@ -516,8 +515,8 @@ class TestRoomVentilationAdvisorOptionsFlow:
                     "humidity": 0.3,
                     "co2": 0.2,
                     "time": 0.1,
-                }
-            }
+                },
+            },
         }
 
         result = await flow.async_step_advanced(advanced_input)
@@ -530,14 +529,14 @@ class TestRoomVentilationAdvisorOptionsFlow:
         assert score_weights["time"] == 0.1
 
     async def test_options_flow_with_existing_settings(
-        self, hass: HomeAssistant
+        self, hass: HomeAssistant,
     ) -> None:
         """Test options flow with existing advanced settings."""
         existing_advanced = {
             CONF_TEMPERATURE_THRESHOLDS: {
                 "winter_good": 3.5,
                 "winter_moderate": 1.5,
-            }
+            },
         }
 
         config_entry = MockConfigEntry(
@@ -577,8 +576,8 @@ class TestRoomVentilationAdvisorOptionsFlow:
                 CONF_ADVANCED_SETTINGS: {
                     CONF_TEMPERATURE_THRESHOLDS: {
                         "winter_good": 2.0,
-                    }
-                }
+                    },
+                },
             },
         )
 
@@ -594,8 +593,8 @@ class TestRoomVentilationAdvisorOptionsFlow:
                 CONF_HUMIDITY_THRESHOLDS: {
                     "good": 2.0,
                     "moderate": 0.5,
-                }
-            }
+                },
+            },
         }
 
         result = await flow.async_step_advanced(advanced_input)
@@ -632,7 +631,7 @@ class TestRoomVentilationAdvisorOptionsFlow:
                         CONF_ROOM_TYPE: "living_room",
                         CONF_CO2_SENSOR: "sensor.living_co2",
                         CONF_ENABLED: True,
-                    }
+                    },
                 },
             },
             options={},
@@ -715,7 +714,7 @@ class TestRoomVentilationAdvisorOptionsFlow:
         )
 
     async def test_options_flow_add_room_duplicate_name(
-        self, hass: HomeAssistant
+        self, hass: HomeAssistant,
     ) -> None:
         """Test adding a room with duplicate name."""
         config_entry = MockConfigEntry(
@@ -732,7 +731,7 @@ class TestRoomVentilationAdvisorOptionsFlow:
                         CONF_TEMP_SENSOR: "sensor.living_temp",
                         CONF_HUMIDITY_SENSOR: "sensor.living_humidity",
                         CONF_ROOM_TYPE: "living_room",
-                    }
+                    },
                 },
             },
             options={},
@@ -779,7 +778,7 @@ class TestRoomVentilationAdvisorOptionsFlow:
                         CONF_ROOM_TYPE: "living_room",
                         CONF_CO2_SENSOR: "sensor.living_co2",
                         CONF_ENABLED: True,
-                    }
+                    },
                 },
             },
             options={},
@@ -792,7 +791,7 @@ class TestRoomVentilationAdvisorOptionsFlow:
         # Navigate to edit room
         await flow.async_step_init({"configure_rooms": True})
         result = await flow.async_step_rooms(
-            {"edit_room": True, "room_to_edit": "Living Room"}
+            {"edit_room": True, "room_to_edit": "Living Room"},
         )
 
         assert result["type"] == FlowResultType.FORM
@@ -860,7 +859,7 @@ class TestRoomVentilationAdvisorOptionsFlow:
         # Navigate to remove room
         await flow.async_step_init({"configure_rooms": True})
         result = await flow.async_step_rooms(
-            {"remove_room": True, "room_to_remove": "Living Room"}
+            {"remove_room": True, "room_to_remove": "Living Room"},
         )
 
         assert result["type"] == FlowResultType.FORM
@@ -877,7 +876,7 @@ class TestRoomVentilationAdvisorOptionsFlow:
         assert "Kitchen" in updated_data[CONF_ROOMS]  # Other room should remain
 
     async def test_options_flow_co2_sensor_schema_validation(
-        self, hass: HomeAssistant
+        self, hass: HomeAssistant,
     ) -> None:
         """Test that CO2 sensor field handles empty strings correctly."""
         # Create a mock config entry
@@ -891,8 +890,8 @@ class TestRoomVentilationAdvisorOptionsFlow:
                         CONF_TEMP_SENSOR: "sensor.temperature",
                         CONF_CO2_SENSOR: None,  # Initially None
                         CONF_ENABLED: True,
-                    }
-                }
+                    },
+                },
             },
         )
 
@@ -925,10 +924,9 @@ class TestRoomVentilationAdvisorOptionsFlow:
         assert validated_data[CONF_CO2_SENSOR] is None
 
     async def test_options_flow_remove_room_placeholder_and_functionality(
-        self, hass: HomeAssistant
+        self, hass: HomeAssistant,
     ) -> None:
-        """
-        Test that remove room placeholder replacement and functionality.
+        """Test that remove room placeholder replacement and functionality.
 
         work correctly.
         """
@@ -942,8 +940,8 @@ class TestRoomVentilationAdvisorOptionsFlow:
                         CONF_HUMIDITY_SENSOR: "sensor.humidity",
                         CONF_TEMP_SENSOR: "sensor.temperature",
                         CONF_ENABLED: True,
-                    }
-                }
+                    },
+                },
             },
         )
 
@@ -957,7 +955,7 @@ class TestRoomVentilationAdvisorOptionsFlow:
         # Navigate to remove room
         await flow.async_step_init({"configure_rooms": True})
         result = await flow.async_step_rooms(
-            {"remove_room": True, "room_to_remove": "Test Room"}
+            {"remove_room": True, "room_to_remove": "Test Room"},
         )
 
         assert result["type"] == FlowResultType.FORM

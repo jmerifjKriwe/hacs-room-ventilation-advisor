@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import inspect
 import logging
 import re
 from datetime import UTC, datetime, timedelta
@@ -75,7 +76,11 @@ async def async_setup_entry(
         if room_config.get(CONF_ENABLED, True):
             entities.append(VentilationSensor(coordinator, room_name, room_config))
 
-    async_add_entities(entities)
+    # Home Assistant allows async_add_entities to be either sync or return an awaitable.
+    # Call it and only await if it returns an awaitable.
+    result: Any = async_add_entities(entities, update_before_add=True)
+    if inspect.isawaitable(result):
+        await result
 
 
 class VentilationDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
@@ -84,7 +89,8 @@ class VentilationDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
     def __init__(self, hass: HomeAssistant, entry: ConfigEntry) -> None:
         """Initialize the coordinator."""
         scan_interval = entry.options.get(CONF_SCAN_INTERVAL) or entry.data.get(
-            CONF_SCAN_INTERVAL, 300
+            CONF_SCAN_INTERVAL,
+            300,
         )
         super().__init__(
             hass,
@@ -101,13 +107,13 @@ class VentilationDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
 
         # Get outdoor sensors - check options first, then config
         outdoor_temp_entity = self.entry.options.get(
-            CONF_OUTDOOR_TEMP_SENSOR
+            CONF_OUTDOOR_TEMP_SENSOR,
         ) or self.entry.data.get(CONF_OUTDOOR_TEMP_SENSOR)
         outdoor_humidity_entity = self.entry.options.get(
-            CONF_OUTDOOR_HUMIDITY_SENSOR
+            CONF_OUTDOOR_HUMIDITY_SENSOR,
         ) or self.entry.data.get(CONF_OUTDOOR_HUMIDITY_SENSOR)
         wind_entity = self.entry.options.get(CONF_WIND_SENSOR) or self.entry.data.get(
-            CONF_WIND_SENSOR
+            CONF_WIND_SENSOR,
         )
 
         try:
@@ -139,16 +145,16 @@ class VentilationDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             try:
                 # Get room sensors - check options first, then config
                 temp_sensor = room_settings.get(CONF_TEMP_SENSOR) or room_config.get(
-                    CONF_TEMP_SENSOR
+                    CONF_TEMP_SENSOR,
                 )
                 humidity_sensor = room_settings.get(
-                    CONF_HUMIDITY_SENSOR
+                    CONF_HUMIDITY_SENSOR,
                 ) or room_config.get(CONF_HUMIDITY_SENSOR)
                 co2_sensor = room_settings.get(CONF_CO2_SENSOR) or room_config.get(
-                    CONF_CO2_SENSOR
+                    CONF_CO2_SENSOR,
                 )
                 room_type = room_settings.get(CONF_ROOM_TYPE) or room_config.get(
-                    CONF_ROOM_TYPE
+                    CONF_ROOM_TYPE,
                 )
 
                 indoor_temp = self._get_sensor_value(temp_sensor)
@@ -253,7 +259,8 @@ class VentilationSensor(
             return round(score, 2)
         except (ValueError, TypeError):
             _LOGGER.exception(
-                "Error calculating ventilation score for %s", self.room_name
+                "Error calculating ventilation score for %s",
+                self.room_name,
             )
             return None
 

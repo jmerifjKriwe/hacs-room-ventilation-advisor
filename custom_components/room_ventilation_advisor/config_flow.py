@@ -53,7 +53,7 @@ class RoomVentilationAdvisorConfigFlow(config_entries.ConfigFlow, domain=DOMAIN)
         self._rooms: dict[str, dict[str, Any]] = {}
 
     async def async_step_user(
-        self, user_input: dict[str, Any] | None = None
+        self, user_input: dict[str, Any] | None = None,
     ) -> config_entries.ConfigFlowResult:
         """Handle initial step - base configuration."""
         # Check if already configured
@@ -82,25 +82,25 @@ class RoomVentilationAdvisorConfigFlow(config_entries.ConfigFlow, domain=DOMAIN)
                 vol.Required(CONF_NAME, default="Room Ventilation Advisor"): str,
                 vol.Required(CONF_OUTDOOR_TEMP_SENSOR): selector.EntitySelector(
                     selector.EntitySelectorConfig(
-                        domain="sensor", device_class="temperature"
-                    )
+                        domain="sensor", device_class="temperature",
+                    ),
                 ),
                 vol.Required(CONF_OUTDOOR_HUMIDITY_SENSOR): selector.EntitySelector(
                     selector.EntitySelectorConfig(
-                        domain="sensor", device_class="humidity"
-                    )
+                        domain="sensor", device_class="humidity",
+                    ),
                 ),
                 vol.Required(CONF_WIND_SENSOR): selector.EntitySelector(
-                    selector.EntitySelectorConfig(domain="sensor")
+                    selector.EntitySelectorConfig(domain="sensor"),
                 ),
                 vol.Optional(
-                    CONF_SCAN_INTERVAL, default=DEFAULT_SCAN_INTERVAL
+                    CONF_SCAN_INTERVAL, default=DEFAULT_SCAN_INTERVAL,
                 ): selector.NumberSelector(
                     selector.NumberSelectorConfig(
-                        min=60, max=3600, unit_of_measurement="seconds"
-                    )
+                        min=60, max=3600, unit_of_measurement="seconds",
+                    ),
                 ),
-            }
+            },
         )
 
         return self.async_show_form(
@@ -110,7 +110,7 @@ class RoomVentilationAdvisorConfigFlow(config_entries.ConfigFlow, domain=DOMAIN)
         )
 
     async def async_step_room_setup(
-        self, user_input: dict[str, Any] | None = None
+        self, user_input: dict[str, Any] | None = None,
     ) -> config_entries.ConfigFlowResult:
         """Handle room setup."""
         if user_input is not None:
@@ -134,25 +134,25 @@ class RoomVentilationAdvisorConfigFlow(config_entries.ConfigFlow, domain=DOMAIN)
                 vol.Required(CONF_ROOM_NAME): str,
                 vol.Required(CONF_TEMP_SENSOR): selector.EntitySelector(
                     selector.EntitySelectorConfig(
-                        domain="sensor", device_class="temperature"
-                    )
+                        domain="sensor", device_class="temperature",
+                    ),
                 ),
                 vol.Required(CONF_HUMIDITY_SENSOR): selector.EntitySelector(
                     selector.EntitySelectorConfig(
-                        domain="sensor", device_class="humidity"
-                    )
+                        domain="sensor", device_class="humidity",
+                    ),
                 ),
                 vol.Required(CONF_ROOM_TYPE): selector.SelectSelector(
-                    selector.SelectSelectorConfig(options=ROOM_TYPES)
+                    selector.SelectSelectorConfig(options=ROOM_TYPES),
                 ),
                 vol.Optional(CONF_CO2_SENSOR): selector.EntitySelector(
-                    selector.EntitySelectorConfig(domain="sensor")
+                    selector.EntitySelectorConfig(domain="sensor"),
                 ),
                 vol.Optional(CONF_ENABLED, default=True): bool,
                 vol.Optional(
-                    "add_another_room", default=len(self._rooms) < MAX_ROOMS
+                    "add_another_room", default=len(self._rooms) < MAX_ROOMS,
                 ): bool,
-            }
+            },
         )
 
         return self.async_show_form(
@@ -169,7 +169,7 @@ class RoomVentilationAdvisorConfigFlow(config_entries.ConfigFlow, domain=DOMAIN)
         }
 
         return self.async_create_entry(
-            title=self._base_config[CONF_NAME], data=config_data
+            title=self._base_config[CONF_NAME], data=config_data,
         )
 
     @staticmethod
@@ -192,7 +192,7 @@ class RoomVentilationAdvisorOptionsFlow(config_entries.OptionsFlow):
         self._room_to_remove: str | None = None
 
     async def async_step_init(
-        self, user_input: dict[str, Any] | None = None
+        self, user_input: dict[str, Any] | None = None,
     ) -> config_entries.ConfigFlowResult:
         """Manage the options."""
         if user_input is not None:
@@ -212,7 +212,7 @@ class RoomVentilationAdvisorOptionsFlow(config_entries.OptionsFlow):
                     vol.Optional("configure_basic", default=False): bool,
                     vol.Optional("configure_rooms", default=False): bool,
                     vol.Optional("configure_advanced", default=False): bool,
-                }
+                },
             ),
             description_placeholders={
                 "basic_desc": "Configure scan interval, wind factor, and room settings",
@@ -223,7 +223,7 @@ class RoomVentilationAdvisorOptionsFlow(config_entries.OptionsFlow):
         )
 
     async def async_step_basic(
-        self, user_input: dict[str, Any] | None = None
+        self, user_input: dict[str, Any] | None = None,
     ) -> config_entries.ConfigFlowResult:
         """Handle basic options - only global settings."""
         if user_input is not None:
@@ -256,35 +256,35 @@ class RoomVentilationAdvisorOptionsFlow(config_entries.OptionsFlow):
                     default=self._config_entry.data.get(CONF_OUTDOOR_TEMP_SENSOR),
                 ): selector.EntitySelector(
                     selector.EntitySelectorConfig(
-                        domain="sensor", device_class="temperature"
-                    )
+                        domain="sensor", device_class="temperature",
+                    ),
                 ),
                 vol.Optional(
                     CONF_OUTDOOR_HUMIDITY_SENSOR,
                     default=self._config_entry.data.get(CONF_OUTDOOR_HUMIDITY_SENSOR),
                 ): selector.EntitySelector(
                     selector.EntitySelectorConfig(
-                        domain="sensor", device_class="humidity"
-                    )
+                        domain="sensor", device_class="humidity",
+                    ),
                 ),
                 vol.Optional(
                     CONF_WIND_SENSOR,
                     default=self._config_entry.data.get(CONF_WIND_SENSOR),
                 ): selector.EntitySelector(
-                    selector.EntitySelectorConfig(domain="sensor")
+                    selector.EntitySelectorConfig(domain="sensor"),
                 ),
                 vol.Optional(
                     CONF_SCAN_INTERVAL,
                     default=self._config_entry.data.get(
-                        CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL
+                        CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL,
                     ),
                 ): selector.NumberSelector(
                     selector.NumberSelectorConfig(
-                        min=60, max=3600, unit_of_measurement="seconds"
-                    )
+                        min=60, max=3600, unit_of_measurement="seconds",
+                    ),
                 ),
                 vol.Optional("enable_wind_factor", default=True): bool,
-            }
+            },
         )
 
         return self.async_show_form(
@@ -293,7 +293,7 @@ class RoomVentilationAdvisorOptionsFlow(config_entries.OptionsFlow):
         )
 
     async def async_step_advanced(
-        self, user_input: dict[str, Any] | None = None
+        self, user_input: dict[str, Any] | None = None,
     ) -> config_entries.ConfigFlowResult:
         """Handle advanced ventilation settings."""
         if user_input is not None:
@@ -302,7 +302,7 @@ class RoomVentilationAdvisorOptionsFlow(config_entries.OptionsFlow):
             # Accept either nested submission under CONF_ADVANCED_SETTINGS
             # or a flat set of advanced keys produced by the form.
             if CONF_ADVANCED_SETTINGS in user_input and isinstance(
-                user_input[CONF_ADVANCED_SETTINGS], dict
+                user_input[CONF_ADVANCED_SETTINGS], dict,
             ):
                 advanced_settings = user_input[CONF_ADVANCED_SETTINGS]
             else:
@@ -327,7 +327,7 @@ class RoomVentilationAdvisorOptionsFlow(config_entries.OptionsFlow):
         )
 
     def _build_advanced_settings_from_flat(
-        self, user_input: dict[str, Any]
+        self, user_input: dict[str, Any],
     ) -> dict[str, Any]:
         """Build nested advanced settings dict from a flat form submission."""
         advanced_settings: dict[str, Any] = {}
@@ -400,7 +400,7 @@ class RoomVentilationAdvisorOptionsFlow(config_entries.OptionsFlow):
                 vol.Optional(
                     "temperature_winter_good",
                     default=current_advanced.get(CONF_TEMPERATURE_THRESHOLDS, {}).get(
-                        "winter_good", DEFAULT_TEMPERATURE_THRESHOLDS["winter_good"]
+                        "winter_good", DEFAULT_TEMPERATURE_THRESHOLDS["winter_good"],
                     ),
                 ): vol.Coerce(float),
                 vol.Optional(
@@ -413,7 +413,7 @@ class RoomVentilationAdvisorOptionsFlow(config_entries.OptionsFlow):
                 vol.Optional(
                     "temperature_summer_good",
                     default=current_advanced.get(CONF_TEMPERATURE_THRESHOLDS, {}).get(
-                        "summer_good", DEFAULT_TEMPERATURE_THRESHOLDS["summer_good"]
+                        "summer_good", DEFAULT_TEMPERATURE_THRESHOLDS["summer_good"],
                     ),
                 ): vol.Coerce(float),
                 vol.Optional(
@@ -426,7 +426,7 @@ class RoomVentilationAdvisorOptionsFlow(config_entries.OptionsFlow):
                 vol.Optional(
                     "temperature_default_good",
                     default=current_advanced.get(CONF_TEMPERATURE_THRESHOLDS, {}).get(
-                        "default_good", DEFAULT_TEMPERATURE_THRESHOLDS["default_good"]
+                        "default_good", DEFAULT_TEMPERATURE_THRESHOLDS["default_good"],
                     ),
                 ): vol.Coerce(float),
                 vol.Optional(
@@ -440,77 +440,77 @@ class RoomVentilationAdvisorOptionsFlow(config_entries.OptionsFlow):
                 vol.Optional(
                     "humidity_good",
                     default=current_advanced.get(CONF_HUMIDITY_THRESHOLDS, {}).get(
-                        "good", DEFAULT_HUMIDITY_THRESHOLDS["good"]
+                        "good", DEFAULT_HUMIDITY_THRESHOLDS["good"],
                     ),
                 ): vol.Coerce(float),
                 vol.Optional(
                     "humidity_moderate",
                     default=current_advanced.get(CONF_HUMIDITY_THRESHOLDS, {}).get(
-                        "moderate", DEFAULT_HUMIDITY_THRESHOLDS["moderate"]
+                        "moderate", DEFAULT_HUMIDITY_THRESHOLDS["moderate"],
                     ),
                 ): vol.Coerce(float),
                 # CO2
                 vol.Optional(
                     "co2_very_poor",
                     default=current_advanced.get(CONF_CO2_THRESHOLDS, {}).get(
-                        "very_poor", DEFAULT_CO2_THRESHOLDS["very_poor"]
+                        "very_poor", DEFAULT_CO2_THRESHOLDS["very_poor"],
                     ),
                 ): vol.Coerce(int),
                 vol.Optional(
                     "co2_poor",
                     default=current_advanced.get(CONF_CO2_THRESHOLDS, {}).get(
-                        "poor", DEFAULT_CO2_THRESHOLDS["poor"]
+                        "poor", DEFAULT_CO2_THRESHOLDS["poor"],
                     ),
                 ): vol.Coerce(int),
                 vol.Optional(
                     "co2_moderate",
                     default=current_advanced.get(CONF_CO2_THRESHOLDS, {}).get(
-                        "moderate", DEFAULT_CO2_THRESHOLDS["moderate"]
+                        "moderate", DEFAULT_CO2_THRESHOLDS["moderate"],
                     ),
                 ): vol.Coerce(int),
                 # Wind
                 vol.Optional(
                     "wind_no_effect",
                     default=current_advanced.get(CONF_WIND_THRESHOLDS, {}).get(
-                        "no_effect", DEFAULT_WIND_THRESHOLDS["no_effect"]
+                        "no_effect", DEFAULT_WIND_THRESHOLDS["no_effect"],
                     ),
                 ): vol.Coerce(float),
                 vol.Optional(
                     "wind_moderate_effect",
                     default=current_advanced.get(CONF_WIND_THRESHOLDS, {}).get(
-                        "moderate_effect", DEFAULT_WIND_THRESHOLDS["moderate_effect"]
+                        "moderate_effect", DEFAULT_WIND_THRESHOLDS["moderate_effect"],
                     ),
                 ): vol.Coerce(float),
                 # Score weights
                 vol.Optional(
                     "weight_temperature",
                     default=current_advanced.get(CONF_SCORE_WEIGHTS, {}).get(
-                        "temperature", DEFAULT_SCORE_WEIGHTS["temperature"]
+                        "temperature", DEFAULT_SCORE_WEIGHTS["temperature"],
                     ),
                 ): vol.Coerce(float),
                 vol.Optional(
                     "weight_humidity",
                     default=current_advanced.get(CONF_SCORE_WEIGHTS, {}).get(
-                        "humidity", DEFAULT_SCORE_WEIGHTS["humidity"]
+                        "humidity", DEFAULT_SCORE_WEIGHTS["humidity"],
                     ),
                 ): vol.Coerce(float),
                 vol.Optional(
                     "weight_co2",
                     default=current_advanced.get(CONF_SCORE_WEIGHTS, {}).get(
-                        "co2", DEFAULT_SCORE_WEIGHTS["co2"]
+                        "co2", DEFAULT_SCORE_WEIGHTS["co2"],
                     ),
                 ): vol.Coerce(float),
                 vol.Optional(
                     "weight_time",
                     default=current_advanced.get(CONF_SCORE_WEIGHTS, {}).get(
-                        "time", DEFAULT_SCORE_WEIGHTS["time"]
+                        "time", DEFAULT_SCORE_WEIGHTS["time"],
                     ),
                 ): vol.Coerce(float),
-            }
+            },
         )
 
     async def async_step_rooms(
-        self, user_input: dict[str, Any] | None = None
+        self, user_input: dict[str, Any] | None = None,
     ) -> config_entries.ConfigFlowResult:
         """Handle room configuration options."""
         if user_input is not None:
@@ -540,17 +540,17 @@ class RoomVentilationAdvisorOptionsFlow(config_entries.OptionsFlow):
                 {
                     vol.Optional("edit_room", default=False): bool,
                     vol.Optional("room_to_edit"): selector.SelectSelector(
-                        selector.SelectSelectorConfig(options=room_names)
+                        selector.SelectSelectorConfig(options=room_names),
                     )
                     if room_names
                     else None,
                     vol.Optional("remove_room", default=False): bool,
                     vol.Optional("room_to_remove"): selector.SelectSelector(
-                        selector.SelectSelectorConfig(options=room_names)
+                        selector.SelectSelectorConfig(options=room_names),
                     )
                     if room_names
                     else None,
-                }
+                },
             )
 
         schema_dict[vol.Optional("add_room", default=False)] = bool
@@ -567,7 +567,7 @@ class RoomVentilationAdvisorOptionsFlow(config_entries.OptionsFlow):
         )
 
     async def async_step_add_room(
-        self, user_input: dict[str, Any] | None = None
+        self, user_input: dict[str, Any] | None = None,
     ) -> config_entries.ConfigFlowResult:
         """Add a new room."""
         if user_input is not None:
@@ -613,14 +613,14 @@ class RoomVentilationAdvisorOptionsFlow(config_entries.OptionsFlow):
             updated_config[CONF_ROOMS] = updated_rooms
 
             self.hass.config_entries.async_update_entry(
-                self._config_entry, data=updated_config
+                self._config_entry, data=updated_config,
             )
 
             # Reload the entry to update sensors (skip in testing)
             if not os.environ.get("PYTEST_CURRENT_TEST"):
                 with contextlib.suppress(Exception):
                     await self.hass.config_entries.async_reload(
-                        self._config_entry.entry_id
+                        self._config_entry.entry_id,
                     )
 
             return self.async_create_entry(title="", data={})
@@ -631,10 +631,9 @@ class RoomVentilationAdvisorOptionsFlow(config_entries.OptionsFlow):
         )
 
     async def async_step_edit_room(
-        self, user_input: dict[str, Any] | None = None
+        self, user_input: dict[str, Any] | None = None,
     ) -> config_entries.ConfigFlowResult:
-        """
-        Edit an existing room.
+        """Edit an existing room.
 
         The selected room name is stored on the flow instance in
         `self._room_to_edit` when the user navigates from the rooms menu.
@@ -670,7 +669,7 @@ class RoomVentilationAdvisorOptionsFlow(config_entries.OptionsFlow):
                     CONF_ROOM_TYPE: user_input[CONF_ROOM_TYPE],
                     CONF_CO2_SENSOR: co2_sensor_value,
                     CONF_ENABLED: user_input.get(CONF_ENABLED, True),
-                }
+                },
             )
 
             updated_config = dict(self._config_entry.data)
@@ -679,7 +678,7 @@ class RoomVentilationAdvisorOptionsFlow(config_entries.OptionsFlow):
             updated_config[CONF_ROOMS] = updated_rooms
 
             self.hass.config_entries.async_update_entry(
-                self._config_entry, data=updated_config
+                self._config_entry, data=updated_config,
             )
 
             # clear stored selection
@@ -700,10 +699,9 @@ class RoomVentilationAdvisorOptionsFlow(config_entries.OptionsFlow):
         )
 
     async def async_step_remove_room(
-        self, user_input: dict[str, Any] | None = None
+        self, user_input: dict[str, Any] | None = None,
     ) -> config_entries.ConfigFlowResult:
-        """
-        Remove a room.
+        """Remove a room.
 
         The selected room to remove is stored on the flow instance in
         `self._room_to_remove` when navigating from the rooms menu. This
@@ -727,14 +725,14 @@ class RoomVentilationAdvisorOptionsFlow(config_entries.OptionsFlow):
                     updated_config[CONF_ROOMS] = updated_rooms
 
                     self.hass.config_entries.async_update_entry(
-                        self._config_entry, data=updated_config
+                        self._config_entry, data=updated_config,
                     )
 
                     # Reload the entry to update sensors (skip in testing)
                     if not os.environ.get("PYTEST_CURRENT_TEST"):
                         with contextlib.suppress(Exception):
                             await self.hass.config_entries.async_reload(
-                                self._config_entry.entry_id
+                                self._config_entry.entry_id,
                             )
 
                     # clear stored selection
@@ -756,13 +754,13 @@ class RoomVentilationAdvisorOptionsFlow(config_entries.OptionsFlow):
             data_schema=vol.Schema(
                 {
                     vol.Required("confirm_remove", default=False): bool,
-                }
+                },
             ),
             description_placeholders={"room_name": room_name},
         )
 
     def _get_room_schema(
-        self, current_config: dict[str, Any] | None = None
+        self, current_config: dict[str, Any] | None = None,
     ) -> vol.Schema:
         """Get the room configuration schema."""
         if current_config is None:
@@ -771,38 +769,38 @@ class RoomVentilationAdvisorOptionsFlow(config_entries.OptionsFlow):
         return vol.Schema(
             {
                 vol.Required(
-                    CONF_ROOM_NAME, default=current_config.get(CONF_ROOM_NAME, "")
+                    CONF_ROOM_NAME, default=current_config.get(CONF_ROOM_NAME, ""),
                 ): str,
                 vol.Required(
-                    CONF_TEMP_SENSOR, default=current_config.get(CONF_TEMP_SENSOR)
+                    CONF_TEMP_SENSOR, default=current_config.get(CONF_TEMP_SENSOR),
                 ): selector.EntitySelector(
                     selector.EntitySelectorConfig(
-                        domain="sensor", device_class="temperature"
-                    )
+                        domain="sensor", device_class="temperature",
+                    ),
                 ),
                 vol.Required(
                     CONF_HUMIDITY_SENSOR,
                     default=current_config.get(CONF_HUMIDITY_SENSOR),
                 ): selector.EntitySelector(
                     selector.EntitySelectorConfig(
-                        domain="sensor", device_class="humidity"
-                    )
+                        domain="sensor", device_class="humidity",
+                    ),
                 ),
                 vol.Required(
-                    CONF_ROOM_TYPE, default=current_config.get(CONF_ROOM_TYPE)
+                    CONF_ROOM_TYPE, default=current_config.get(CONF_ROOM_TYPE),
                 ): selector.SelectSelector(
-                    selector.SelectSelectorConfig(options=ROOM_TYPES)
+                    selector.SelectSelectorConfig(options=ROOM_TYPES),
                 ),
                 vol.Optional(
-                    CONF_CO2_SENSOR, default=current_config.get(CONF_CO2_SENSOR)
+                    CONF_CO2_SENSOR, default=current_config.get(CONF_CO2_SENSOR),
                 ): vol.Any(
                     None,
                     selector.EntitySelector(
-                        selector.EntitySelectorConfig(domain="sensor")
+                        selector.EntitySelectorConfig(domain="sensor"),
                     ),
                 ),
                 vol.Optional(
-                    CONF_ENABLED, default=current_config.get(CONF_ENABLED, True)
+                    CONF_ENABLED, default=current_config.get(CONF_ENABLED, True),
                 ): bool,
-            }
+            },
         )

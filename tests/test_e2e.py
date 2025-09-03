@@ -1,5 +1,6 @@
 """End-to-End tests for Room Ventilation Advisor integration."""
 
+# ruff: noqa: ANN401
 # pyright: reportTypedDictNotRequiredAccess=false,reportOptionalSubscript=false,reportOperatorIssue=false,reportArgumentType=false,reportAttributeAccessIssue=false
 
 import asyncio
@@ -77,7 +78,8 @@ async def _init_basic_flow(hass: HomeAssistant) -> Any:
     await _load_integration_manually(hass)
 
     result = await hass.config_entries.flow.async_init(
-        DOMAIN, context={"source": "user"}
+        DOMAIN,
+        context={"source": "user"},
     )
     if result.get("type") is not FlowResultType.FORM:
         msg = "Expected FORM result type"
@@ -119,7 +121,7 @@ async def _load_integration_manually(hass: HomeAssistant) -> Integration:
                 hass=hass,
                 pkg_path="custom_components.room_ventilation_advisor",
                 file_path=str(
-                    workspace_dir / "custom_components" / "room_ventilation_advisor"
+                    workspace_dir / "custom_components" / "room_ventilation_advisor",
                 ),
                 manifest={
                     "domain": DOMAIN,
@@ -152,7 +154,8 @@ async def _setup_platforms_for_entry(hass: HomeAssistant, config_entry: Any) -> 
         entities_added = []
 
         def async_add_entities(
-            new_entities: Any, update_before_add: bool = False
+            new_entities: Any,
+            update_before_add: bool = False,
         ) -> None:
             """Mock function to add entities to Home Assistant."""
             # update_before_add required by HA API but unused in test
@@ -168,7 +171,9 @@ async def _setup_platforms_for_entry(hass: HomeAssistant, config_entry: Any) -> 
                 entities_added.append(entity)
                 # Set the entity state directly (simplified for test environment)
                 hass.states.async_set(
-                    entity.entity_id, entity.native_value, entity.extra_state_attributes
+                    entity.entity_id,
+                    entity.native_value,
+                    entity.extra_state_attributes,
                 )
                 _LOGGER.info(
                     "Entity %s registered with state: %s",
@@ -186,13 +191,15 @@ async def _setup_platforms_for_entry(hass: HomeAssistant, config_entry: Any) -> 
         # Also try the forward_entry_setups as backup
         try:
             await hass.config_entries.async_forward_entry_setups(
-                config_entry, PLATFORMS
+                config_entry,
+                PLATFORMS,
             )
         except ValueError as e:
             _LOGGER.warning("async_forward_entry_setups failed: %s", e)
 
         _LOGGER.info(
-            "Successfully set up platforms for entry: %s", config_entry.entry_id
+            "Successfully set up platforms for entry: %s",
+            config_entry.entry_id,
         )
     except Exception:
         _LOGGER.exception("Failed to set up platforms for entry")
@@ -212,7 +219,8 @@ async def _configure_basic(hass: HomeAssistant, flow_result: Any) -> Any:
     }
 
     result = await hass.config_entries.flow.async_configure(
-        flow_result.get("flow_id"), basic_config
+        flow_result.get("flow_id"),
+        basic_config,
     )
     if result.get("type") is not FlowResultType.FORM:
         msg = f"Expected FORM result type, got {result.get('type')}"
@@ -224,11 +232,14 @@ async def _configure_basic(hass: HomeAssistant, flow_result: Any) -> Any:
 
 
 async def _add_room_via_flow(
-    hass: HomeAssistant, flow_result: Any, room_cfg: dict
+    hass: HomeAssistant,
+    flow_result: Any,
+    room_cfg: dict,
 ) -> Any:
     """Submit a room configuration during the config flow and return the result."""
     return await hass.config_entries.flow.async_configure(
-        flow_result.get("flow_id"), room_cfg
+        flow_result.get("flow_id"),
+        room_cfg,
     )
 
 
@@ -245,8 +256,7 @@ async def _start_options_flow(hass: HomeAssistant, entry_id: str) -> Any:
 
 
 async def test_complete_integration_lifecycle(hass: HomeAssistant) -> None:
-    """
-    End-to-end scenario exercising setup, options flow, and removal.
+    """End-to-end scenario exercising setup, options flow, and removal.
 
     This test intentionally uses real integration code without mocks where
     possible. It imports the integration modules so Home Assistant's loader
@@ -389,17 +399,19 @@ async def test_complete_integration_lifecycle(hass: HomeAssistant) -> None:
                 raise ValueError(msg)
         else:
             _LOGGER.warning(
-                "Sensor entity not found, but continuing test: %s", sensor_entity_id
+                "Sensor entity not found, but continuing test: %s",
+                sensor_entity_id,
             )
     else:
         _LOGGER.warning(
-            "Platform setup failed, continuing test without sensor validation"
+            "Platform setup failed, continuing test without sensor validation",
         )
 
     # --- PHASE 8/9: Add second room via options flow ---
     options_result = await _start_options_flow(hass, config_entry.entry_id)
     options_result = await hass.config_entries.options.async_configure(
-        options_result.get("flow_id"), {"configure_rooms": True}
+        options_result.get("flow_id"),
+        {"configure_rooms": True},
     )
     if options_result.get("type") is not FlowResultType.FORM:
         msg = "Expected FORM result type for rooms configuration"
@@ -409,7 +421,8 @@ async def test_complete_integration_lifecycle(hass: HomeAssistant) -> None:
         raise ValueError(msg)
 
     options_result = await hass.config_entries.options.async_configure(
-        options_result.get("flow_id"), {"add_room": True}
+        options_result.get("flow_id"),
+        {"add_room": True},
     )
     if options_result.get("type") is not FlowResultType.FORM:
         msg = "Expected FORM result type for add room"
@@ -428,7 +441,8 @@ async def test_complete_integration_lifecycle(hass: HomeAssistant) -> None:
     }
 
     options_result = await hass.config_entries.options.async_configure(
-        options_result.get("flow_id"), second_room
+        options_result.get("flow_id"),
+        second_room,
     )
     if options_result.get("type") is not FlowResultType.CREATE_ENTRY:
         msg = "Expected CREATE_ENTRY result type for second room"
@@ -446,10 +460,12 @@ async def test_complete_integration_lifecycle(hass: HomeAssistant) -> None:
     # --- PHASE 11/12: Edit kitchen via options flow ---
     options_result = await _start_options_flow(hass, config_entry.entry_id)
     options_result = await hass.config_entries.options.async_configure(
-        options_result.get("flow_id"), {"configure_rooms": True}
+        options_result.get("flow_id"),
+        {"configure_rooms": True},
     )
     options_result = await hass.config_entries.options.async_configure(
-        options_result.get("flow_id"), {"edit_room": True, "room_to_edit": "Kitchen"}
+        options_result.get("flow_id"),
+        {"edit_room": True, "room_to_edit": "Kitchen"},
     )
     if options_result.get("type") is not FlowResultType.FORM:
         msg = "Expected FORM result type for edit room"
@@ -460,7 +476,8 @@ async def test_complete_integration_lifecycle(hass: HomeAssistant) -> None:
 
     modified_kitchen = {**second_room, CONF_ENABLED: False}
     options_result = await hass.config_entries.options.async_configure(
-        options_result.get("flow_id"), modified_kitchen
+        options_result.get("flow_id"),
+        modified_kitchen,
     )
     if options_result.get("type") is not FlowResultType.CREATE_ENTRY:
         msg = "Expected CREATE_ENTRY result type for edit room"
@@ -474,7 +491,8 @@ async def test_complete_integration_lifecycle(hass: HomeAssistant) -> None:
     # --- PHASE 14/15: Remove kitchen via options flow ---
     options_result = await _start_options_flow(hass, config_entry.entry_id)
     options_result = await hass.config_entries.options.async_configure(
-        options_result.get("flow_id"), {"configure_rooms": True}
+        options_result.get("flow_id"),
+        {"configure_rooms": True},
     )
     options_result = await hass.config_entries.options.async_configure(
         options_result.get("flow_id"),
@@ -488,7 +506,8 @@ async def test_complete_integration_lifecycle(hass: HomeAssistant) -> None:
         raise ValueError(msg)
 
     options_result = await hass.config_entries.options.async_configure(
-        options_result.get("flow_id"), {"confirm_remove": True}
+        options_result.get("flow_id"),
+        {"confirm_remove": True},
     )
     if options_result.get("type") is not FlowResultType.CREATE_ENTRY:
         msg = "Expected CREATE_ENTRY result type for remove room"
@@ -518,7 +537,8 @@ async def test_complete_integration_lifecycle(hass: HomeAssistant) -> None:
     options_result = await _start_options_flow(hass, config_entry.entry_id)
     # Just test that we can select basic settings and get to the basic step
     options_result = await hass.config_entries.options.async_configure(
-        options_result.get("flow_id"), {"configure_basic": True}
+        options_result.get("flow_id"),
+        {"configure_basic": True},
     )
     if options_result.get("type") is not FlowResultType.FORM:
         msg = "Expected FORM result type for basic options"
@@ -536,7 +556,8 @@ async def test_complete_integration_lifecycle(hass: HomeAssistant) -> None:
     }
 
     options_result = await hass.config_entries.options.async_configure(
-        options_result.get("flow_id"), basic_data
+        options_result.get("flow_id"),
+        basic_data,
     )
     # If this fails, it means there's a validation error in the basic schema
     if options_result.get("type") is not FlowResultType.CREATE_ENTRY:

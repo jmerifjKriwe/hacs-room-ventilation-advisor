@@ -48,7 +48,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         # Clean up device registry
         device_registry = dr.async_get(hass)
         device = device_registry.async_get_device(
-            identifiers={(DOMAIN, entry.entry_id)}
+            identifiers={(DOMAIN, entry.entry_id)},
         )
         if device:
             device_registry.async_remove_device(device.id)
