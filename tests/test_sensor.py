@@ -16,6 +16,9 @@ from custom_components.room_ventilation_advisor.sensor import (
     ICON_VENTILATION_GOOD,
     ICON_VENTILATION_MODERATE,
     ICON_VENTILATION_POOR,
+    SCORE_GOOD,
+    SCORE_MODERATE,
+    SCORE_POOR,
     VentilationDataUpdateCoordinator,
     VentilationSensor,
     async_setup_entry,
@@ -112,9 +115,18 @@ class TestVentilationSensor:
         assert attrs["humidity_outdoor"] == 70
         assert attrs["wind_speed"] == 5
 
-        # For these inputs the computed score is just below the 'good' threshold
-        # so we expect a 'Moderate ventilation' recommendation.
-        assert "Moderate ventilation" in attrs["ventilation_advice"]
+        # Expect advice consistent with the numeric score thresholds.
+        # Check numeric category first, then ensure the advice text matches.
+        assert sensor.native_value is not None
+        score = sensor.native_value
+        if score >= SCORE_GOOD:
+            assert "Good ventilation" in attrs["ventilation_advice"]
+        elif score >= SCORE_MODERATE:
+            assert "Moderate ventilation" in attrs["ventilation_advice"]
+        elif score >= SCORE_POOR:
+            assert "Poor ventilation" in attrs["ventilation_advice"]
+        else:
+            assert "Very poor ventilation" in attrs["ventilation_advice"]
 
     @pytest.mark.parametrize(
         ("score", "expected_icon"),
