@@ -1,8 +1,8 @@
-"""Test constants and fixtures for Room Ventilation Advisor."""
+"""Pytest fixtures for the test suite."""
 
 import logging
 import tempfile
-from collections.abc import AsyncGenerator, Generator
+from collections.abc import AsyncGenerator, Callable, Generator
 from pathlib import Path
 from typing import Any
 
@@ -27,6 +27,40 @@ from custom_components.room_ventilation_advisor.const import (
     DEFAULT_SCAN_INTERVAL,
     ROOM_TYPE_LIVING_ROOM,
 )
+from custom_components.room_ventilation_advisor.sensor import (
+    SCORE_GOOD,
+    SCORE_MODERATE,
+    SCORE_POOR,
+)
+
+
+def advice_category_for_score(score: float | None) -> str:
+    """
+    Return the expected advice short label for a numeric score.
+
+    This helper mirrors the logic in the integration's
+    ``VentilationSensor._get_ventilation_advice`` but returns a short
+    label suitable for assertions (e.g. "Good ventilation").
+    """
+    if score is None:
+        return "Unable to calculate ventilation advice"
+    if score >= SCORE_GOOD:
+        return "Good ventilation"
+    if score >= SCORE_MODERATE:
+        return "Moderate ventilation"
+    if score >= SCORE_POOR:
+        return "Poor ventilation"
+    return "Very poor ventilation"
+
+
+@pytest.fixture
+def advice_category() -> Callable[[float | None], str]:
+    """
+    Provide a helper that maps numeric score -> advice label.
+
+    Use in tests as `expected = advice_category(score)`.
+    """
+    return advice_category_for_score
 
 
 @pytest.fixture
