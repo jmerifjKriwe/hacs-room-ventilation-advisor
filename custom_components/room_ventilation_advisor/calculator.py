@@ -3,6 +3,26 @@ Ventilation calculation logic for Room Ventilation Advisor.
 
 Provides calculation of ventilation scores and factors for rooms
 based on sensor data and configuration.
+
+Notes
+-----
+This module computes absolute humidity using a saturation vapor pressure
+approximation (a Magnus-Tetens style formula) and converts relative
+humidity/temperature to absolute humidity in g/m³. The saturation vapour
+pressure approximation and related psychrometric calculations are commonly
+used in atmospheric science libraries such as MetPy (see MetPy's
+``saturation_vapor_pressure`` and related utilities) for reference. The
+implementation here is a simplified form suitable for embedded Home
+Assistant use; for rigorous scientific work consider using a dedicated
+psychrometric library (for example, MetPy or psychrolib).
+
+The final ventilation "score" returned by :class:`VentilationCalculator`
+is a weighted heuristic combination of temperature, humidity, CO₂ and
+time factors (and a simple wind penalty). Default thresholds and
+weights live in ``const.py`` and are chosen to produce sensible home
+automation recommendations; they are not a formal standard but tunable
+parameters.
+
 """
 
 import logging
